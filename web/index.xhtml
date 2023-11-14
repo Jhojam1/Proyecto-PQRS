@@ -38,7 +38,7 @@
                         </table>
                         <div class="button-group">
                             <h:commandButton value="Iniciar Sesión" action="#{control_Usuario.iniciar()}" />
-                            <h:commandButton value="Registrarse" />
+                            <h:commandButton value="Registrarse" action="#{control_Usuario.registrar()}"/>
                         </div>
                     </p:panel>
                 </div>
@@ -62,6 +62,7 @@
                 ". . .";
             height: 100vh; /* Hacemos que el contenedor ocupe toda la altura de la pantalla */
         }
+
 
         .inicio-de-sesion {
             grid-area: inicio-de-sesion;

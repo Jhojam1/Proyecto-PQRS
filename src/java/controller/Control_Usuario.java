@@ -26,6 +26,7 @@ public class Control_Usuario {
     private Usuario user = new Usuario();
     private boolean mostrarInicio = true;
     private String pagina_nueva = "";
+    private String login= "/index.xhtml";
 
     public void iniciar() {
         boolean credencialesCorrectas = false;
@@ -47,9 +48,12 @@ public class Control_Usuario {
             if ("Administrador".equals(currentUser.getRol())) {
                 pagina_nueva = "/Administrador/MenuAdministrador.xhtml";
             }           
-        }
-        
-        
+        }            
+    }
+    
+    public void registrar(){
+       mostrarInicio = false;
+       pagina_nueva ="/Registros/Registro_Usuario.xhtml";
     }
 
     /**
@@ -93,4 +97,18 @@ public class Control_Usuario {
     public void setPagina_nueva(String pagina_nueva) {
         this.pagina_nueva = pagina_nueva;
     }  
+
+    /**
+     * @return the login
+     */
+    public String getLogin() {
+        return login;
+    }
+
+    /**
+     * @param login the login to set
+     */
+    public void setLogin(String login) {
+        this.login = login;
+    }
 }
