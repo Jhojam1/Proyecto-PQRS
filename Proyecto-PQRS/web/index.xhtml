@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Inicio de Sesión</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <div class="container">
+                <div class="inicio-de-sesion">
+                    <p:panel styleClass="center-panel" rendered="#{control_Usuario.mostrarInicio}">
+                        <f:facet name="header">
+                            <div>
+                                <h2>Inicio de Sesión</h2>
+                            </div>
+                        </f:facet>
+                        <table class="form-table">
+                            <tr>
+                                <td>
+                                    <h:outputText value="Usuario" />
+                                </td>
+                                <td>
+                                    <p:inputText value="#{control_Usuario.user.usuario}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h:outputText value="Contraseña" />
+                                </td>
+                                <td>
+                                    <p:inputText value="#{control_Usuario.user.contraseña}"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="button-group">
+                            <h:commandButton value="Iniciar Sesión" action="#{control_Usuario.iniciar()}" />
+                            <h:commandButton value="Registrarse" action="#{control_Usuario.registrar()}"/>
+                        </div>
+                    </p:panel>
+                </div>
+            
+            <p:panel rendered="#{!control_Usuario.mostrarInicio}">
+                <ui:include src="#{control_Usuario.pagina_nueva}" />
+            </p:panel>
+                </div>
+        </h:form>
+    </h:body>
+
+    <style>
+        .container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 20px; /* Espacio entre las filas y columnas */
+            grid-auto-flow: row;
+            grid-template-areas:
+                ". . ."
+                ". inicio-de-sesion ."
+                ". . .";
+            height: 100vh; /* Hacemos que el contenedor ocupe toda la altura de la pantalla */
+        }
+
+
+        .inicio-de-sesion {
+            grid-area: inicio-de-sesion;
+        }
+
+        .center-panel {
+            text-align: center;
+            max-width: 400px;
+            margin: auto;
+        }
+
+        .form-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .form-table td {
+            padding: 10px;
+        }
+
+        .button-group {
+            text-align: center;
+            margin-top: 20px; /* Aumentamos el espacio sobre el grupo de botones */
+        }
+
+        .button-group p\:commandButton {
+            margin-right: 30px; /* Agregamos un margen derecho entre los botones */
+        }
+    </style>
+</html>
