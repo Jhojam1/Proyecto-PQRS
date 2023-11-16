@@ -4,7 +4,7 @@
  */
 package controller;
 
-import controller_Daos.ImpldaoUsuario;
+import controller_Daos.ImpldaoInicioSesion;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import model.Usuario;
@@ -27,10 +27,11 @@ public class Control_Usuario {
     private boolean mostrarInicio = true;
     private String pagina_nueva = "";
     private String login= "/index.xhtml";
+    
 
-    public void iniciar() {
+    public void iniciarSesion() {
         boolean credencialesCorrectas = false;
-        ImpldaoUsuario impluser = new ImpldaoUsuario();
+        ImpldaoInicioSesion impluser = new ImpldaoInicioSesion();
         Usuario currentUser = impluser.selectUser(user.getUsuario(), user.getContraseña());
 
         if (currentUser != null) {
@@ -51,9 +52,9 @@ public class Control_Usuario {
         }            
     }
     
-    public void registrar(){
+    public void mostrarRegistrar(){
        mostrarInicio = false;
-       pagina_nueva ="/Registros/Registro_Usuario.xhtml";
+       pagina_nueva ="/Registros/Registro_Ciudadano.xhtml";
     }
 
     /**

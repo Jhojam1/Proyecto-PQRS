@@ -26,6 +26,4 @@ public interface IDao<T>{
 
   void modificar(T entity);
   
-  T selectUser(String usuario, String contraseña);
-  
 }

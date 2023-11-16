@@ -15,7 +15,7 @@
                     <h:outputText value="tipo Solicitante" />
                 </td>
                 <td>
-                    <p:inputText value=""/>
+                    <p:inputText value="#{control_Ciudadano.ciudadano.tiposolicitante}"/>
                 </td>
             </tr>
             <tr>
@@ -23,7 +23,7 @@
                     <h:outputText value="Nombres" />
                 </td>
                 <td>
-                    <p:inputText value=""/>
+                    <p:inputText value="#{control_Ciudadano.ciudadano.nombres}"/>
                 </td>
             </tr>
             <tr>
@@ -31,7 +31,7 @@
                     <h:outputText value="Apellidos" />
                 </td>
                 <td>
-                    <p:inputText value=""/>
+                    <p:inputText value="#{control_Ciudadano.ciudadano.apellidos}"/>
                 </td>
             </tr>
             <tr>
@@ -39,7 +39,7 @@
                     <h:outputText value="Tipo De Identificacion" />
                 </td>
                 <td>
-                    <p:inputText value=""/>
+                    <p:inputText value="#{control_Ciudadano.ciudadano.tipoidentificacion}"/>
                 </td>
             </tr>
             <tr>
@@ -47,7 +47,31 @@
                     <h:outputText value="Numero de Identificacion" />
                 </td>
                 <td>
-                    <p:inputText value=""/>
+                    <p:inputText value="#{control_Ciudadano.ciudadano.numeroidentificacion}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h:outputText value="numero de telefono" />
+                </td>
+                <td>
+                    <p:inputText value="#{control_Ciudadano.ciudadano.numerotelefono}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h:outputText value="direccion" />
+                </td>
+                <td>
+                    <p:inputText value="#{control_Ciudadano.ciudadano.direccion}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h:outputText value="correo" />
+                </td>
+                <td>
+                    <p:inputText value="#{control_Ciudadano.ciudadano.correo}"/>
                 </td>
             </tr>
             <tr>
@@ -55,7 +79,7 @@
                     <h:outputText value="Usuario" />
                 </td>
                 <td>
-                    <p:inputText value=""/>
+                    <p:inputText value="#{control_Ciudadano.ciudadano.usuario}"/>
                 </td>
             </tr>
             <tr>
@@ -63,11 +87,11 @@
                     <h:outputText value="Contraseña" />
                 </td>
                 <td>
-                    <p:inputText value=""/>
+                    <p:inputText value="#{control_Ciudadano.ciudadano.contraseña}"/>
                 </td>
             </tr>
         </table>                         
-        <h:commandButton value="Registrar"/>
+        <h:commandButton value="Registrar" action="#{control_Ciudadano.registrarCiudadano()}"/>
         <h:commandButton value="Salir"/>
     </h:body>
 </html>

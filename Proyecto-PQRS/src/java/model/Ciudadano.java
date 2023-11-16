@@ -4,6 +4,9 @@
  */
 package model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  *
  * @author User
@@ -32,6 +35,23 @@ public class Ciudadano extends Usuario{
         this.direccion = direccion;
     }
     
+    
+        public static Ciudadano load(ResultSet rs) throws SQLException {
+        Ciudadano ciudadano = new Ciudadano();
+        ciudadano.setId(rs.getInt(1));
+        ciudadano.setNombres(rs.getString(2));
+        ciudadano.setApellidos(rs.getString(3));
+        ciudadano.setTipoidentificacion(rs.getString(4));
+        ciudadano.setNumeroidentificacion(rs.getString(5));
+        ciudadano.setUsuario(rs.getString(6));
+        ciudadano.setContraseña(rs.getString(7));
+        ciudadano.setRol(rs.getString(8));
+        ciudadano.setTiposolicitante(rs.getString(9));
+        ciudadano.setCorreo(rs.getString(10));
+        ciudadano.setNumerotelefono(11);
+        ciudadano.setDireccion(rs.getString(12));
+        return ciudadano;
+    }
     
 
     /**
