@@ -41,12 +41,13 @@
                             <h:commandButton value="Registrarse" action="#{control_Usuario.mostrarRegistrar()}"/>
                         </div>
                     </p:panel>
+
+
+                    <p:panel rendered="#{!control_Usuario.mostrarInicio}">
+                        <ui:include src="#{control_Usuario.pagina_nueva}" />
+                    </p:panel>
                 </div>
-            
-            <p:panel rendered="#{!control_Usuario.mostrarInicio}">
-                <ui:include src="#{control_Usuario.pagina_nueva}" />
-            </p:panel>
-                </div>
+            </div>
         </h:form>
     </h:body>
 

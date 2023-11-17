@@ -22,7 +22,7 @@ public class Control_Ciudadano {
      */
     public Control_Ciudadano() {
     }
-    
+    private Ciudadano ciudadanologeado = new Ciudadano();
     private Ciudadano ciudadano = new Ciudadano();
     ImpldaoCiudadano impciu = new ImpldaoCiudadano();
     
@@ -45,6 +45,20 @@ public class Control_Ciudadano {
      */
     public void setCiudadano(Ciudadano ciudadano) {
         this.ciudadano = ciudadano;
+    }
+
+    /**
+     * @return the ciudadanologeado
+     */
+    public Ciudadano getCiudadanologeado() {
+        return ciudadanologeado;
+    }
+
+    /**
+     * @param ciudadanologeado the ciudadanologeado to set
+     */
+    public void setCiudadanologeado(Ciudadano ciudadanologeado) {
+        this.ciudadanologeado = ciudadanologeado;
     }
     
     

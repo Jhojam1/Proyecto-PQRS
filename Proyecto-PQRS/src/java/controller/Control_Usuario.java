@@ -6,9 +6,10 @@ package controller;
 
 import controller_Daos.ImpldaoInicioSesion;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import model.Ciudadano;
 import model.Usuario;
-import utilidades.Utilidad;
 
 /**
  *
@@ -23,11 +24,13 @@ public class Control_Usuario {
      */
     public Control_Usuario() {
     }
+
+    @ManagedProperty("#{control_Ciudadano}")
+    private Control_Ciudadano ciucon = new Control_Ciudadano();
+
     private Usuario user = new Usuario();
     private boolean mostrarInicio = true;
     private String pagina_nueva = "";
-    private String login= "/index.xhtml";
-    
 
     public void iniciarSesion() {
         boolean credencialesCorrectas = false;
@@ -36,25 +39,33 @@ public class Control_Usuario {
 
         if (currentUser != null) {
             credencialesCorrectas = true;
-            Utilidad.Usertemp = currentUser;
             mostrarInicio = false;
         }
         if (credencialesCorrectas == true) {
             if ("Ciudadano".equals(currentUser.getRol())) {
                 pagina_nueva = "/Ciudadano/MenuCiudadano.xhtml";
+                Ciudadano ciudadano = ciucon.impciu.select(currentUser.getId());
+                ciucon.setCiudadanologeado(ciudadano);
             }
             if ("Funcionario".equals(currentUser.getRol())) {
-                pagina_nueva = "/Funcionario/MenuFuncionario.xhtml";
+                pagina_nueva = "/Secretario_de_despacho/MenuSecretariosDeDespacho.xhtml";
             }
             if ("Administrador".equals(currentUser.getRol())) {
                 pagina_nueva = "/Administrador/MenuAdministrador.xhtml";
-            }           
-        }            
+            }
+        }
     }
-    
-    public void mostrarRegistrar(){
-       mostrarInicio = false;
-       pagina_nueva ="/Registros/Registro_Ciudadano.xhtml";
+
+    public void mostrarRegistrar() {
+        mostrarInicio = false;
+        pagina_nueva = "/Registros/Registro_Ciudadano.xhtml";
+    }
+
+    public void salir() {
+        user = new Usuario();
+        mostrarInicio = true;
+        pagina_nueva = "";
+
     }
 
     /**
@@ -97,19 +108,19 @@ public class Control_Usuario {
      */
     public void setPagina_nueva(String pagina_nueva) {
         this.pagina_nueva = pagina_nueva;
-    }  
-
-    /**
-     * @return the login
-     */
-    public String getLogin() {
-        return login;
     }
 
     /**
-     * @param login the login to set
+     * @return the ciucon
      */
-    public void setLogin(String login) {
-        this.login = login;
+    public Control_Ciudadano getCiucon() {
+        return ciucon;
+    }
+
+    /**
+     * @param ciucon the ciucon to set
+     */
+    public void setCiucon(Control_Ciudadano ciucon) {
+        this.ciucon = ciucon;
     }
 }

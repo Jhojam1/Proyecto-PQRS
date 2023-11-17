@@ -109,6 +109,6 @@ public class Ciudadano extends Usuario{
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
-    
+   
     
 }
