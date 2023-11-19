@@ -2,23 +2,25 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
         <h:form>
-            <h2>Menu Ciudadano</h2>
-            <p>Bienvenido #{control_Ciudadano.ciudadanologeado.toString()}</p> 
-            <p>Selecciona Tu Opcion:</p>
-
-            <p:panelGrid columns="1">
-                <h:commandButton value="1. Crear PQRS"/>
-                <h:commandButton value="2. Cancelar PQRS"/>
-                <h:commandButton value="3. Consultar mi PQRS"/>    
+            <p:panelGrid columns="1" rendered="#{control_Ciudadano.mostrarMenu}">
+                <h2>Menu Ciudadano</h2>
+                <p>Bienvenido #{control_Ciudadano.ciudadanologeado.toString()}</p> 
+                <p>Selecciona Tu Opcion:</p>
+                <h:commandButton value="1. Crear PQRS" action="#{control_Ciudadano.paginaCrearPQRS()}"/>
+                <h:commandButton value="2. Cancelar PQRS" action="#{control_Ciudadano.paginaCancelarPQRS()}"/>
+                <h:commandButton value="3. Consultar mi PQRS" action="#{control_Ciudadano.paginaConsultarPQRS()}"/>    
                 <h:commandButton value="4. Salir" action="#{control_Usuario.salir()}"/>
-
             </p:panelGrid>
+            <p:panel rendered="#{!control_Ciudadano.mostrarMenu}">
+                <ui:include src="#{control_Ciudadano.pagina_nueva}" />
+            </p:panel>
 
 
         </h:form>

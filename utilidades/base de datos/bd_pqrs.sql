@@ -1,6 +1,6 @@
 /*
 SQLyog Community v12.2.5 (32 bit)
-MySQL - 5.5.19 : Database - bd_pqrs
+MySQL - 5.5.41 : Database - bd_pqrs
 *********************************************************************
 */
 
@@ -44,6 +44,18 @@ CREATE TABLE `ciudadanos` (
 
 /*Data for the table `ciudadanos` */
 
+/*Table structure for table `dependencias` */
+
+DROP TABLE IF EXISTS `dependencias`;
+
+CREATE TABLE `dependencias` (
+  `nombre` varchar(255) DEFAULT NULL,
+  `id` int(255) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `dependencias` */
+
 /*Table structure for table `secretariosdespacho` */
 
 DROP TABLE IF EXISTS `secretariosdespacho`;
@@ -56,6 +68,37 @@ CREATE TABLE `secretariosdespacho` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Data for the table `secretariosdespacho` */
+
+/*Table structure for table `solicitudes` */
+
+DROP TABLE IF EXISTS `solicitudes`;
+
+CREATE TABLE `solicitudes` (
+  `tipossolicitud` varchar(255) DEFAULT NULL,
+  `dependencia` int(255) DEFAULT NULL,
+  `categoria` varchar(255) DEFAULT NULL,
+  `descripcionsolicitud` varchar(255) DEFAULT NULL,
+  `usuariosolicitud` int(255) DEFAULT NULL,
+  `fecha` date DEFAULT NULL,
+  `respuesta` varchar(255) DEFAULT NULL,
+  `estado` varchar(255) DEFAULT NULL,
+  `radicado` int(255) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`radicado`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `solicitudes` */
+
+/*Table structure for table `tiposdesolicitud` */
+
+DROP TABLE IF EXISTS `tiposdesolicitud`;
+
+CREATE TABLE `tiposdesolicitud` (
+  `id` int(255) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `tiposdesolicitud` */
 
 /*Table structure for table `usuarios` */
 
