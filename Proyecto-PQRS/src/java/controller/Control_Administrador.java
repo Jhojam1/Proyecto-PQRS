@@ -4,6 +4,7 @@
  */
 package controller;
 
+import controller_Daos.ImpldaoAdministrador;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import model.Administrador;
@@ -22,6 +23,8 @@ public class Control_Administrador {
     public Control_Administrador() {
     }
     private Administrador admin = new Administrador();
+    
+    private ImpldaoAdministrador impadm = new ImpldaoAdministrador();
 
     /**
      * @return the admin
@@ -35,6 +38,20 @@ public class Control_Administrador {
      */
     public void setAdmin(Administrador admin) {
         this.admin = admin;
+    }
+
+    /**
+     * @return the impadm
+     */
+    public ImpldaoAdministrador getImpadm() {
+        return impadm;
+    }
+
+    /**
+     * @param impadm the impadm to set
+     */
+    public void setImpadm(ImpldaoAdministrador impadm) {
+        this.impadm = impadm;
     }
     
 }

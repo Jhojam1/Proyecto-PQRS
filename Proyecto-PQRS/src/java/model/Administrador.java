@@ -4,6 +4,9 @@
  */
 package model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  *
  * @author User
@@ -26,6 +29,20 @@ public class Administrador extends Usuario{
         this.dependencia = dependencia;
     }
     
+        public static Administrador load(ResultSet rs) throws SQLException {
+        Administrador administrador = new Administrador();
+        administrador.setId(rs.getInt(1));
+        administrador.setNombres(rs.getString(2));
+        administrador.setApellidos(rs.getString(3));
+        administrador.setTipoidentificacion(rs.getString(4));
+        administrador.setNumeroidentificacion(rs.getString(5));
+        administrador.setUsuario(rs.getString(6));
+        administrador.setContraseña(rs.getString(7));
+        administrador.setRol(rs.getString(8));
+        administrador.setCorreo(rs.getString(9));
+        administrador.setDependencia(rs.getString(10));
+        return administrador;
+    }
     
     /**
      * @return the correo

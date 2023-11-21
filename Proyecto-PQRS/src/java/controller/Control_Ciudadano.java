@@ -26,29 +26,33 @@ public class Control_Ciudadano {
     private Ciudadano ciudadano = new Ciudadano();
     ImpldaoCiudadano impciu = new ImpldaoCiudadano();
     private boolean mostrarMenu = true;
-    
-    private String pagina_nueva= "";
-    
-    
-    public void registrarCiudadano(){
+
+    private String pagina_nueva = "";
+
+    public void registrarCiudadano() {
         impciu.create(ciudadano);
         ciudadano = new Ciudadano();
-        
+
     }
-    
-    public void paginaCrearPQRS(){
+
+    public void paginaCrearPQRS() {
         mostrarMenu = false;
-        pagina_nueva="/Ciudadano/Registro_PQRS.xhtml";
+        pagina_nueva = "/Ciudadano/Registro_PQRS.xhtml";
     }
-    
-    public void paginaConsultarPQRS(){
+
+    public void paginaConsultarPQRS() {
         mostrarMenu = false;
-        pagina_nueva="/Ciudadano/Consultar_PQRS.xhtml";
+        pagina_nueva = "/Ciudadano/Consultar_PQRS.xhtml";
     }
-    
-    public void paginaCancelarPQRS(){
+
+    public void paginaCancelarPQRS() {
         mostrarMenu = false;
-        pagina_nueva="/Ciudadano/Cancelar_PQRS.xhtml";
+        pagina_nueva = "/Ciudadano/Cancelar_PQRS.xhtml";
+    }
+
+    public void salir() {
+        mostrarMenu = true;
+        pagina_nueva = "";
     }
 
     /**
@@ -106,6 +110,5 @@ public class Control_Ciudadano {
     public void setMostrarMenu(boolean mostrarMenu) {
         this.mostrarMenu = mostrarMenu;
     }
-    
-    
+
 }

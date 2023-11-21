@@ -8,7 +8,9 @@ import controller_Daos.ImpldaoInicioSesion;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import model.Administrador;
 import model.Ciudadano;
+import model.Secretario_de_despacho;
 import model.Usuario;
 
 /**
@@ -27,6 +29,12 @@ public class Control_Usuario {
 
     @ManagedProperty("#{control_Ciudadano}")
     private Control_Ciudadano ciucon = new Control_Ciudadano();
+
+    @ManagedProperty("#{control_Administrador}")
+    private Control_Administrador admcon = new Control_Administrador();
+
+    @ManagedProperty("#{control_Secretario_de_despacho}")
+    private Control_Secretario_de_despacho secrecon = new Control_Secretario_de_despacho();
 
     private Usuario user = new Usuario();
     private boolean mostrarInicio = true;
@@ -47,11 +55,15 @@ public class Control_Usuario {
                 Ciudadano ciudadano = ciucon.impciu.select(currentUser.getId());
                 ciucon.setCiudadanologeado(ciudadano);
             }
-            if ("Funcionario".equals(currentUser.getRol())) {
+            if ("Secretario de despacho".equals(currentUser.getRol())) {
                 pagina_nueva = "/Secretario_de_despacho/MenuSecretariosDeDespacho.xhtml";
+                Secretario_de_despacho secretario = secrecon.getImplsecre().select(currentUser.getId());
+                secrecon.setSecretario(secretario);
             }
             if ("Administrador".equals(currentUser.getRol())) {
                 pagina_nueva = "/Administrador/MenuAdministrador.xhtml";
+                Administrador administrador = admcon.getImpadm().select(currentUser.getId());
+                admcon.setAdmin(administrador);
             }
         }
     }
@@ -122,5 +134,33 @@ public class Control_Usuario {
      */
     public void setCiucon(Control_Ciudadano ciucon) {
         this.ciucon = ciucon;
+    }
+
+    /**
+     * @return the admcon
+     */
+    public Control_Administrador getAdmcon() {
+        return admcon;
+    }
+
+    /**
+     * @param admcon the admcon to set
+     */
+    public void setAdmcon(Control_Administrador admcon) {
+        this.admcon = admcon;
+    }
+
+    /**
+     * @return the secrecon
+     */
+    public Control_Secretario_de_despacho getSecrecon() {
+        return secrecon;
+    }
+
+    /**
+     * @param secrecon the secrecon to set
+     */
+    public void setSecrecon(Control_Secretario_de_despacho secrecon) {
+        this.secrecon = secrecon;
     }
 }

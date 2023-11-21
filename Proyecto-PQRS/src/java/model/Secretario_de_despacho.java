@@ -4,6 +4,9 @@
  */
 package model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  *
  * @author User
@@ -26,7 +29,20 @@ public class Secretario_de_despacho extends Usuario{
         this.dependencia = dependencia;
     }
 
-    
+    public static Secretario_de_despacho load(ResultSet rs) throws SQLException {
+        Secretario_de_despacho secretario = new Secretario_de_despacho();
+        secretario.setId(rs.getInt(1));
+        secretario.setNombres(rs.getString(2));
+        secretario.setApellidos(rs.getString(3));
+        secretario.setTipoidentificacion(rs.getString(4));
+        secretario.setNumeroidentificacion(rs.getString(5));
+        secretario.setUsuario(rs.getString(6));
+        secretario.setContraseña(rs.getString(7));
+        secretario.setRol(rs.getString(8));
+        secretario.setCorreo(rs.getString(9));
+        secretario.setDependencia(rs.getString(10));
+        return secretario;
+    }
     
     /**
      * @return the correo

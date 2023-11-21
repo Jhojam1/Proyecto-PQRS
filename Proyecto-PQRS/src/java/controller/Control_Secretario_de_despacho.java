@@ -4,6 +4,7 @@
  */
 package controller;
 
+import controller_Daos.ImpldaoSecretariodedespacho;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import model.Secretario_de_despacho;
@@ -23,6 +24,8 @@ public class Control_Secretario_de_despacho {
     }
     
     private Secretario_de_despacho secretario = new Secretario_de_despacho();
+    private ImpldaoSecretariodedespacho implsecre = new ImpldaoSecretariodedespacho();
+    
 
     /**
      * @return the secretario
@@ -36,6 +39,20 @@ public class Control_Secretario_de_despacho {
      */
     public void setSecretario(Secretario_de_despacho secretario) {
         this.secretario = secretario;
+    }
+
+    /**
+     * @return the implsecre
+     */
+    public ImpldaoSecretariodedespacho getImplsecre() {
+        return implsecre;
+    }
+
+    /**
+     * @param implsecre the implsecre to set
+     */
+    public void setImplsecre(ImpldaoSecretariodedespacho implsecre) {
+        this.implsecre = implsecre;
     }
     
 }

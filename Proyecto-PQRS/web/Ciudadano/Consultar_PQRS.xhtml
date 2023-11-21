@@ -1,11 +1,40 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        Hello from Facelets
+        <h:form>
+            <h1>Consultar PQRS</h1>
+            Ingrese su numero de radicado:
+            <h:inputText value="#{control_Solicitud.numeroradicado}"/>
+            <h:commandButton value="Buscar" action="#{control_Solicitud.consultaSolicitud()}"/>
+
+            <p:dataTable value="#{control_Solicitud.listasolicitud}" var="soli" >
+                <f:facet name="header">
+                    Solicitud en estado: #{empty control_Solicitud.listasolicitud ? '' : control_Solicitud.listasolicitud[0].estado}
+                </f:facet>
+                <p:column headerText="Tipo de solicitud">
+                    #{soli.tiposolicitud}
+                </p:column>
+                <p:column headerText="Dependencia">
+                    #{soli.dependencia}
+                </p:column>
+                <p:column headerText="Descripcion">
+                    #{soli.descripcionsolicitud}
+                </p:column>
+                <p:column headerText="Fecha">
+                    #{soli.fecha}
+                </p:column>
+                <p:column headerText="respuesta">
+                    #{soli.respuesta}
+                </p:column>
+            </p:dataTable>
+            <h:commandButton value="Salir" action="#{control_Ciudadano.salir()}" />
+        </h:form>
     </h:body>
 </html>
