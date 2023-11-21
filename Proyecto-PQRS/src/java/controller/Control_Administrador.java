@@ -23,8 +23,20 @@ public class Control_Administrador {
     public Control_Administrador() {
     }
     private Administrador admin = new Administrador();
+    private boolean menu = true;
+    private String paginasiguiente ="";
     
     private ImpldaoAdministrador impadm = new ImpldaoAdministrador();
+    
+    public void menuGestiondeUsuarios(){
+        menu = false;
+        paginasiguiente ="/Administrador/Gestion_De_Usuarios.xhtml";
+    }
+    
+    public void salir(){
+        menu = true;
+        paginasiguiente = "";
+    }
 
     /**
      * @return the admin
@@ -52,6 +64,34 @@ public class Control_Administrador {
      */
     public void setImpadm(ImpldaoAdministrador impadm) {
         this.impadm = impadm;
+    }
+
+    /**
+     * @return the menu
+     */
+    public boolean isMenu() {
+        return menu;
+    }
+
+    /**
+     * @param menu the menu to set
+     */
+    public void setMenu(boolean menu) {
+        this.menu = menu;
+    }
+
+    /**
+     * @return the paginasiguiente
+     */
+    public String getPaginasiguiente() {
+        return paginasiguiente;
+    }
+
+    /**
+     * @param paginasiguiente the paginasiguiente to set
+     */
+    public void setPaginasiguiente(String paginasiguiente) {
+        this.paginasiguiente = paginasiguiente;
     }
     
 }

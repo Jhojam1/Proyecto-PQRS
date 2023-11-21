@@ -27,7 +27,8 @@ public class Control_Ciudadano {
     ImpldaoCiudadano impciu = new ImpldaoCiudadano();
     private boolean mostrarMenu = true;
 
-    private String pagina_nueva = "";
+
+    private String paginanew = "";
 
     public void registrarCiudadano() {
         impciu.create(ciudadano);
@@ -37,22 +38,22 @@ public class Control_Ciudadano {
 
     public void paginaCrearPQRS() {
         mostrarMenu = false;
-        pagina_nueva = "/Ciudadano/Registro_PQRS.xhtml";
+        paginanew = "/Ciudadano/Registro_PQRS.xhtml";
     }
 
     public void paginaConsultarPQRS() {
         mostrarMenu = false;
-        pagina_nueva = "/Ciudadano/Consultar_PQRS.xhtml";
+        paginanew = "/Ciudadano/Consultar_PQRS.xhtml";
     }
 
     public void paginaCancelarPQRS() {
         mostrarMenu = false;
-        pagina_nueva = "/Ciudadano/Cancelar_PQRS.xhtml";
+        paginanew = "/Ciudadano/Cancelar_PQRS.xhtml";
     }
 
     public void salir() {
         mostrarMenu = true;
-        pagina_nueva = "";
+        paginanew = "";
     }
 
     /**
@@ -84,17 +85,17 @@ public class Control_Ciudadano {
     }
 
     /**
-     * @return the pagina_nueva
+     * @return the paginanew
      */
-    public String getPagina_nueva() {
-        return pagina_nueva;
+    public String getPaginanew() {
+        return paginanew;
     }
 
     /**
-     * @param pagina_nueva the pagina_nueva to set
+     * @param paginanew the paginanew to set
      */
-    public void setPagina_nueva(String pagina_nueva) {
-        this.pagina_nueva = pagina_nueva;
+    public void setPaginanew(String paginanew) {
+        this.paginanew = paginanew;
     }
 
     /**

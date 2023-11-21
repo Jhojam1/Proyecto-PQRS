@@ -8,6 +8,7 @@ import controller_Daos.ImpldaoSolicitud;
 import java.util.LinkedList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import model.Solicitud;
 
@@ -29,7 +30,10 @@ public class Control_Solicitud {
     private int numeroradicado = 0;
     private int numeroradicadocancelar = 0;
     private List<Solicitud> listasolicitud = new LinkedList();
-
+    @ManagedProperty("#{control_Ciudadano}")
+    private Control_Ciudadano ciucon = new Control_Ciudadano();
+    
+    
     public void consultaSolicitud() {
         ImpldaoSolicitud imsoli = new ImpldaoSolicitud();
         listasolicitud = imsoli.consultarSolicitud(numeroradicado);
@@ -41,6 +45,12 @@ public class Control_Solicitud {
         imsoli.delete(numeroradicadocancelar);
         numeroradicadocancelar=0;
         
+    }
+    
+    public void salir(){
+        ciucon.setMostrarMenu(true);
+        ciucon.setPaginanew("");
+        listasolicitud.clear();
     }
 
     /**
@@ -97,6 +107,20 @@ public class Control_Solicitud {
      */
     public void setListasolicitud(List<Solicitud> listasolicitud) {
         this.listasolicitud = listasolicitud;
+    }
+
+    /**
+     * @return the ciucon
+     */
+    public Control_Ciudadano getCiucon() {
+        return ciucon;
+    }
+
+    /**
+     * @param ciucon the ciucon to set
+     */
+    public void setCiucon(Control_Ciudadano ciucon) {
+        this.ciucon = ciucon;
     }
 
 }
