@@ -5,9 +5,11 @@
 package controller;
 
 import controller_Daos.ImpldaoTipoSolicitud;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import model.Tipo_Solicitud;
 
 /**
@@ -15,43 +17,33 @@ import model.Tipo_Solicitud;
  * @author Pc MasterRace
  */
 @ManagedBean
-@RequestScoped
-public class Control_Tipo_Solicitud {
+@SessionScoped
+public class Control_Tipo_Solicitud implements Serializable {
 
     /**
      * Creates a new instance of Control_Tipo_Solicitud
      */
     public Control_Tipo_Solicitud() {
     }
-    private String tipoSolicitud = "";
+    
     private List<Tipo_Solicitud> listaTiposolicitud;
 
-
-    public List<Tipo_Solicitud> getTiposolicitudOptions() {
-        ImpldaoTipoSolicitud imtiposoli = new ImpldaoTipoSolicitud();
-        listaTiposolicitud = imtiposoli.selectAll();
-        return getListaTiposolicitud();
+    public void getTiposolicitudOptions() {
+        ImpldaoTipoSolicitud imti = new ImpldaoTipoSolicitud();
+        listaTiposolicitud = imti.selectAll();
     }
 
-
-
-    // Método para obtener las opciones de categorías según la dependencia seleccionada
-
-    
-    /**
-     * @return the tipoSolicitud
-     */
-    public String getTipoSolicitud() {
-        return tipoSolicitud;
+    public String obtenernombre(int id) {
+        String nombre= null;
+        for (Tipo_Solicitud t : listaTiposolicitud) {
+            if (t.getId() == id) {
+                nombre = t.getNombre();
+            }
+        }
+        return nombre;
     }
 
-    /**
-     * @param tipoSolicitud the tipoSolicitud to set
-     */
-    public void setTipoSolicitud(String tipoSolicitud) {
-        this.tipoSolicitud = tipoSolicitud;
-    }
-
+   
     /**
      * @return the listaTiposolicitud
      */
@@ -65,6 +57,5 @@ public class Control_Tipo_Solicitud {
     public void setListaTiposolicitud(List<Tipo_Solicitud> listaTiposolicitud) {
         this.listaTiposolicitud = listaTiposolicitud;
     }
-
 
 }

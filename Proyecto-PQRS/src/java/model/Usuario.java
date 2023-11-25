@@ -4,6 +4,7 @@
  */
 package model;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -11,7 +12,7 @@ import java.sql.SQLException;
  *
  * @author Pc MasterRace
  */
-public class Usuario {
+public class Usuario implements Serializable{
 
     private int id;
     private String nombres;

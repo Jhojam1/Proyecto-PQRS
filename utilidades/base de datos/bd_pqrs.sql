@@ -1,6 +1,6 @@
 /*
 SQLyog Community v12.2.5 (32 bit)
-MySQL - 5.5.41 : Database - bd_pqrs
+MySQL - 5.5.19 : Database - bd_pqrs
 *********************************************************************
 */
 
@@ -23,11 +23,45 @@ DROP TABLE IF EXISTS `administradores`;
 CREATE TABLE `administradores` (
   `id` int(255) NOT NULL AUTO_INCREMENT,
   `correo` varchar(255) DEFAULT NULL,
-  `dependencia` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `dependencia` int(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `administrador-dependencia` (`dependencia`),
+  CONSTRAINT `administrador-dependencia` FOREIGN KEY (`dependencia`) REFERENCES `dependencias` (`id`),
+  CONSTRAINT `administrador-usuario` FOREIGN KEY (`id`) REFERENCES `usuarios` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 /*Data for the table `administradores` */
+
+insert  into `administradores`(`id`,`correo`,`dependencia`) values 
+(2,'JhojamCaraballo@gmail.com',1);
+
+/*Table structure for table `categorias` */
+
+DROP TABLE IF EXISTS `categorias`;
+
+CREATE TABLE `categorias` (
+  `id` int(255) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(255) DEFAULT NULL,
+  `dependencia` int(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `categoria-dependencia` (`dependencia`),
+  CONSTRAINT `categoria-dependencia` FOREIGN KEY (`dependencia`) REFERENCES `dependencias` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+
+/*Data for the table `categorias` */
+
+insert  into `categorias`(`id`,`nombre`,`dependencia`) values 
+(1,'Instituciones educativas (Casco urbano)',1),
+(2,'Instituciones educativas (Corregimientos)',1),
+(3,'Cultura',1),
+(4,'PAE',1),
+(5,'Atencion a inmigrantes',1),
+(6,'Otros',1),
+(7,'Obras públicas en construccion',2),
+(8,'Daños en bienes publicos',2),
+(9,'Licencias',2),
+(10,'Agua potable y saneamiento basico',2),
+(11,'Otros',2);
 
 /*Table structure for table `ciudadanos` */
 
@@ -39,22 +73,32 @@ CREATE TABLE `ciudadanos` (
   `correo` varchar(255) DEFAULT NULL,
   `numerotelefono` int(255) DEFAULT NULL,
   `direccion` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`),
+  CONSTRAINT `ciudadano-usuario` FOREIGN KEY (`id`) REFERENCES `usuarios` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*Data for the table `ciudadanos` */
+
+insert  into `ciudadanos`(`id`,`tiposolicitante`,`correo`,`numerotelefono`,`direccion`) values 
+(1,'Persona Natural','JhojamCaraballo@gmail.com',32443,'20 de julio');
 
 /*Table structure for table `dependencias` */
 
 DROP TABLE IF EXISTS `dependencias`;
 
 CREATE TABLE `dependencias` (
-  `nombre` varchar(255) DEFAULT NULL,
   `id` int(255) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 /*Data for the table `dependencias` */
+
+insert  into `dependencias`(`id`,`nombre`) values 
+(1,'Secretaria de educacion'),
+(2,'Secretaria de planeacion'),
+(3,'Secretaria de salud'),
+(4,'Secretaria de gobierno');
 
 /*Table structure for table `secretariosdespacho` */
 
@@ -63,8 +107,10 @@ DROP TABLE IF EXISTS `secretariosdespacho`;
 CREATE TABLE `secretariosdespacho` (
   `id` int(255) NOT NULL AUTO_INCREMENT,
   `correo` varchar(255) DEFAULT NULL,
-  `dependencia` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `dependencia` int(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `secretarios-dependencia` FOREIGN KEY (`id`) REFERENCES `dependencias` (`id`),
+  CONSTRAINT `secretarios-usuario` FOREIGN KEY (`id`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Data for the table `secretariosdespacho` */
@@ -74,19 +120,31 @@ CREATE TABLE `secretariosdespacho` (
 DROP TABLE IF EXISTS `solicitudes`;
 
 CREATE TABLE `solicitudes` (
-  `tipossolicitud` varchar(255) DEFAULT NULL,
+  `tiposolicitud` int(255) DEFAULT NULL,
   `dependencia` int(255) DEFAULT NULL,
-  `categoria` varchar(255) DEFAULT NULL,
+  `categoria` int(255) DEFAULT NULL,
   `descripcionsolicitud` varchar(255) DEFAULT NULL,
   `usuariosolicitud` int(255) DEFAULT NULL,
   `fecha` date DEFAULT NULL,
   `respuesta` varchar(255) DEFAULT NULL,
   `estado` varchar(255) DEFAULT NULL,
   `radicado` int(255) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`radicado`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`radicado`),
+  KEY `solicitudes-tiposolicitud` (`tiposolicitud`),
+  KEY `solicitudes-dependencia` (`dependencia`),
+  KEY `solicitudes-categoria` (`categoria`),
+  KEY `solicitudes-usuario` (`usuariosolicitud`),
+  CONSTRAINT `solicitudes-categoria` FOREIGN KEY (`categoria`) REFERENCES `categorias` (`id`),
+  CONSTRAINT `solicitudes-dependencia` FOREIGN KEY (`dependencia`) REFERENCES `dependencias` (`id`),
+  CONSTRAINT `solicitudes-tiposolicitud` FOREIGN KEY (`tiposolicitud`) REFERENCES `tiposdesolicitud` (`id`),
+  CONSTRAINT `solicitudes-usuario` FOREIGN KEY (`usuariosolicitud`) REFERENCES `usuarios` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 /*Data for the table `solicitudes` */
+
+insert  into `solicitudes`(`tiposolicitud`,`dependencia`,`categoria`,`descripcionsolicitud`,`usuariosolicitud`,`fecha`,`respuesta`,`estado`,`radicado`) values 
+(1,1,1,'LOS SALONES NO SIRVEN',1,'2023-11-21',NULL,'Cancelada',2),
+(1,1,4,'den mas comida',1,'2023-11-24',NULL,'Pendiente',3);
 
 /*Table structure for table `tiposdesolicitud` */
 
@@ -96,9 +154,15 @@ CREATE TABLE `tiposdesolicitud` (
   `id` int(255) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tiposdesolicitud` */
+
+insert  into `tiposdesolicitud`(`id`,`nombre`) values 
+(1,'Peticion'),
+(2,'Queja'),
+(3,'Reclamo'),
+(4,'Sugerencia');
 
 /*Table structure for table `usuarios` */
 
@@ -116,9 +180,13 @@ CREATE TABLE `usuarios` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UQ__Constrai_usuario` (`usuario`),
   UNIQUE KEY `UQ__Constrai_numidentificacion` (`numeroidentificacion`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 /*Data for the table `usuarios` */
+
+insert  into `usuarios`(`id`,`nombres`,`apellidos`,`tipoidentificacion`,`numeroidentificacion`,`usuario`,`contraseña`,`rol`) values 
+(1,'Jhojam Jesus','Caraballo Tapia','CC','12394857484','Jhojam1','Jhojam1','Ciudadano'),
+(2,'Jhojam Jesus','Caraballo Tapia','CC','123467890','Jhojam2','Jhojam2','Administrador');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

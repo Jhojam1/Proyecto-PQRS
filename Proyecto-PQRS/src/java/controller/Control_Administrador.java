@@ -5,6 +5,7 @@
 package controller;
 
 import controller_Daos.ImpldaoAdministrador;
+import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import model.Administrador;
@@ -15,7 +16,7 @@ import model.Administrador;
  */
 @ManagedBean
 @SessionScoped
-public class Control_Administrador {
+public class Control_Administrador implements Serializable{
 
     /**
      * Creates a new instance of Control_Administrador

@@ -1,16 +1,21 @@
 package model;
 
+import controller.Control_Dependencia;
+import controller.Control_Tipo_Solicitud;
+import controller_Daos.ImpldaoCategoria;
 import controller_Daos.ImpldaoCiudadano;
 import controller_Daos.ImpldaoDependencia;
+import controller_Daos.ImpldaoTipoSolicitud;
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
-public class Solicitud {
+public class Solicitud implements Serializable {
 
-    private String tiposolicitud;
+    private Tipo_Solicitud tiposolicitud;
     private Dependencia dependencia;
-    private String categoria;
+    private Categoria categoria;
     private String descripcionsolicitud;
     private Usuario usuariosolicitud;
     private java.sql.Date fecha;
@@ -21,11 +26,11 @@ public class Solicitud {
     public Solicitud() {
     }
 
-    public Solicitud(String tiposolicitud, Dependencia dependencia, String categoria, String descripcionsolicitud, Usuario usuariosolicitud, java.sql.Date fecha, String respuesta, String estado, int radicado) {
+    public Solicitud(Tipo_Solicitud tiposolicitud, Dependencia dependencia, Categoria categoria, String descripcionsolicitud, Usuario usuariosolicitud, java.sql.Date fecha, String respuesta, String estado, int radicado) {
         this.tiposolicitud = tiposolicitud;
         this.dependencia = dependencia;
-        this.categoria = categoria; 
-       this.descripcionsolicitud = descripcionsolicitud;
+        this.categoria = categoria;
+        this.descripcionsolicitud = descripcionsolicitud;
         this.usuariosolicitud = usuariosolicitud;
         this.fecha = fecha;
         this.respuesta = respuesta;
@@ -37,9 +42,11 @@ public class Solicitud {
         Solicitud soli = new Solicitud();
         ImpldaoCiudadano im = new ImpldaoCiudadano();
         ImpldaoDependencia id = new ImpldaoDependencia();
-        soli.setTiposolicitud(rs.getString(1));
+        ImpldaoTipoSolicitud imtip = new ImpldaoTipoSolicitud();
+        ImpldaoCategoria imcat = new ImpldaoCategoria();
+        soli.setTiposolicitud(imtip.select(rs.getInt(1)));
         soli.setDependencia(id.select(rs.getInt(2)));
-        soli.setCategoria(rs.getString(3));
+        soli.setCategoria(imcat.select(rs.getInt(3)));
         soli.setDescripcionsolicitud(rs.getString(4));
         soli.setFecha(rs.getDate(5));
         soli.setRadicado(rs.getInt(6));
@@ -49,16 +56,15 @@ public class Solicitud {
 
         return soli;
     }
-    
-        public static Solicitud load2(ResultSet rs) throws SQLException {
+
+    public static Solicitud load2(ResultSet rs) throws SQLException {
         Solicitud soli = new Solicitud();
-        ImpldaoCiudadano im = new ImpldaoCiudadano();
-        ImpldaoDependencia id = new ImpldaoDependencia();
-        soli.setTiposolicitud(rs.getString(1));
-        soli.setDependencia(id.select(rs.getInt(2)));
+        soli.setTiposolicitud(new Tipo_Solicitud(rs.getInt(1),"" ));
+        soli.setDependencia(new Dependencia("", rs.getInt(2)));
         soli.setDescripcionsolicitud(rs.getString(3));
         soli.setFecha(rs.getDate(4));
         soli.setRespuesta(rs.getString(5));
+        soli.setEstado(rs.getString(6));
         return soli;
     }
 
@@ -70,17 +76,16 @@ public class Solicitud {
     /**
      * @return the tiposolicitud
      */
-    public String getTiposolicitud() {
+    public Tipo_Solicitud getTiposolicitud() {
         return tiposolicitud;
     }
 
     /**
      * @param tiposolicitud the tiposolicitud to set
      */
-    public void setTiposolicitud(String tiposolicitud) {
+    public void setTiposolicitud(Tipo_Solicitud tiposolicitud) {
         this.tiposolicitud = tiposolicitud;
     }
-
 
     /**
      * @return the descripcionsolicitud
@@ -169,14 +174,14 @@ public class Solicitud {
     /**
      * @return the categoria
      */
-    public String getCategoria() {
+    public Categoria getCategoria() {
         return categoria;
     }
 
     /**
      * @param categoria the categoria to set
      */
-    public void setCategoria(String categoria) {
+    public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
 

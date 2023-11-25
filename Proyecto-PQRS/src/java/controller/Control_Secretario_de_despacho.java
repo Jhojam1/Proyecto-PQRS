@@ -5,6 +5,7 @@
 package controller;
 
 import controller_Daos.ImpldaoSecretariodedespacho;
+import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import model.Secretario_de_despacho;
@@ -15,7 +16,7 @@ import model.Secretario_de_despacho;
  */
 @ManagedBean
 @SessionScoped
-public class Control_Secretario_de_despacho {
+public class Control_Secretario_de_despacho implements Serializable {
 
     /**
      * Creates a new instance of Control_Secretario_de_despacho

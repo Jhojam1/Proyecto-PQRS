@@ -1,61 +1,64 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:p="http://primefaces.org/ui">
 
     <h:head>
         <title>Formulario de Solicitud</title>
     </h:head>
 
     <h:body>
-        <h:form>
-            <table>
-                <h1>Registro De PQRS</h1>
-                <tr>
-                    <td>
-                        <h:outputText value="Tipo de Solicitud:" />
-                    </td>
-                    <td>
-                        <p:selectOneMenu value="#{control_Solicitud.solicitud.tiposolicitud}">
-                            <f:selectItems value="#{control_Tipo_Solicitud.tiposolicitudOptions}" var="tipoSolicitud" itemLabel="#{tipoSolicitud.nombre}" itemValue="#{tipoSolicitud}" />
-                        </p:selectOneMenu>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <h:outputText value="Dependencia:" />
-                    </td>
-                    <td>
-                        <p:selectOneMenu value="#{control_Solicitud.solicitud.dependencia}">
-                            <f:selectItems value="#{control_Dependencia.dependenciasOptions}" var="dependencia" itemLabel="#{dependencia.nombre}" itemValue="#{dependencia}" />
-                        </p:selectOneMenu>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <h:outputText value="Categoría:" />
-                    </td>
-                    <td>
-                        <p:selectOneMenu value="">
-                            <!-- Utiliza el componente f:selectItems para cargar dinámicamente las opciones -->
-                            <f:selectItems value="" />
-                        </p:selectOneMenu>
+        <table>
+            <h1>Registro De PQRS</h1>
+            <tr>
+                <td>
+                    <h:outputText value="Tipo de Solicitud:" />
+                </td>
+                <td>
+                    <p:dataGrid var="tip" value="#{control_Tipo_Solicitud.listaTiposolicitud}">
+                        <p:panel>
+                            <h:commandButton value="#{tip.nombre}" action="#{control_Solicitud.agregarTipoSolicitudSolicitud(tip.id)}"/>
+                        </p:panel>
+                    </p:dataGrid>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h:outputText value="Dependencia:" />
+                </td>
+                <td>
+                    <p:dataGrid var="dep" value="#{control_Dependencia.listadependencias}">
+                        <p:panel>
+                            <h:commandButton value="#{dep.nombre}" actionListener="#{control_Ciudadano.obtenerCategoriasXDependencia(dep)}" />
+                        </p:panel>                        
+                    </p:dataGrid>
 
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <h:outputText value="Descripción de la Solicitud:" />
-                    </td>
-                    <td>
-                        <p:inputTextarea value="#{tuBean.descripcionsolicitud}" rows="4" />
-                    </td>
-                </tr>
-            </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h:outputText value="Categoría:" />
+                </td>
+                <td>
+                    <p:dataGrid var="cat" value="#{control_Categorias.listacategoriasXDependencia}">
+                        <p:panel>
+                            <h:commandButton value="#{cat.nombre}" action="#{control_Solicitud.agregarCategoriaSolicitud(cat.id)}"/>
+                        </p:panel>
+                    </p:dataGrid>
 
-            <h:commandButton value="Enviar Solicitud" />
-            <h:commandButton value="Salir" action="#{control_Ciudadano.salir()}" />
-        </h:form>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h:outputText value="Descripción de la Solicitud:" />
+                </td>
+                <td>
+                    <p:inputTextarea value="#{control_Solicitud.solicitud.descripcionsolicitud}" rows="2" style="width: 800px;" />
+                </td>
+            </tr>
+        </table>
+
+        <h:commandButton value="Enviar Solicitud" action="#{control_Ciudadano.Registrar_Solicitud()}"/>
+        <h:commandButton value="Salir" action="#{control_Ciudadano.salir()}" />  
     </h:body>
 </html>

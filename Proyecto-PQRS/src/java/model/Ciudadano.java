@@ -4,6 +4,7 @@
  */
 package model;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -11,23 +12,23 @@ import java.sql.SQLException;
  *
  * @author User
  */
-public class Ciudadano extends Usuario{
+public class Ciudadano extends Usuario implements Serializable{
     private String tiposolicitante;
     private String correo;
-    private int numerotelefono;
+    private String numerotelefono;
     private String direccion;
 
     public Ciudadano() {
     }
 
-    public Ciudadano(String tiposolicitante, String correo, int numerotelefono, String direccion) {
+    public Ciudadano(String tiposolicitante, String correo, String numerotelefono, String direccion) {
         this.tiposolicitante = tiposolicitante;
         this.correo = correo;
         this.numerotelefono = numerotelefono;
         this.direccion = direccion;
     }
 
-    public Ciudadano(String tiposolicitante, String correo, int numerotelefono, String direccion, int id, String nombres, String apellidos, String tipoidentificacion, String numeroidentificacion, String usuario, String contraseña, String rol) {
+    public Ciudadano(String tiposolicitante, String correo, String numerotelefono, String direccion, int id, String nombres, String apellidos, String tipoidentificacion, String numeroidentificacion, String usuario, String contraseña, String rol) {
         super(id, nombres, apellidos, tipoidentificacion, numeroidentificacion, usuario, contraseña, rol);
         this.tiposolicitante = tiposolicitante;
         this.correo = correo;
@@ -48,7 +49,7 @@ public class Ciudadano extends Usuario{
         ciudadano.setRol(rs.getString(8));
         ciudadano.setTiposolicitante(rs.getString(9));
         ciudadano.setCorreo(rs.getString(10));
-        ciudadano.setNumerotelefono(11);
+        ciudadano.setNumerotelefono(rs.getString(11));
         ciudadano.setDireccion(rs.getString(12));
         return ciudadano;
     }
@@ -85,14 +86,14 @@ public class Ciudadano extends Usuario{
     /**
      * @return the numerotelefono
      */
-    public int getNumerotelefono() {
+    public String getNumerotelefono() {
         return numerotelefono;
     }
 
     /**
      * @param numerotelefono the numerotelefono to set
      */
-    public void setNumerotelefono(int numerotelefono) {
+    public void setNumerotelefono(String numerotelefono) {
         this.numerotelefono = numerotelefono;
     }
 

@@ -5,6 +5,7 @@
 package controller;
 
 import controller_Daos.ImpldaoDependencia;
+import java.io.Serializable;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -16,7 +17,7 @@ import model.Dependencia;
  */
 @ManagedBean
 @SessionScoped
-public class Control_Dependencia {
+public class Control_Dependencia implements Serializable{
 
     /**
      * Creates a new instance of Control_Dependencia
@@ -28,10 +29,19 @@ public class Control_Dependencia {
     private List<Dependencia> listadependencias;
 
     
-    public List<Dependencia> getDependenciasOptions() {
+    public void getDependenciasOptions() {
         ImpldaoDependencia imdep = new ImpldaoDependencia();
-        listadependencias = imdep.selectAll(); 
-        return listadependencias;
+        listadependencias = imdep.selectAll();         
+    }
+    
+    public String obtenernombreDependencia(int dependencia){
+        String nombre = null;
+        for(Dependencia d : listadependencias){
+            if(d.getId() == dependencia){
+                nombre=d.getNombre();
+            }
+        }
+        return nombre;
     }
     
     

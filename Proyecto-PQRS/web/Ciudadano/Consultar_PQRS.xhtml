@@ -19,10 +19,10 @@
                     Solicitud en estado: #{empty control_Solicitud.listasolicitud ? '' : control_Solicitud.listasolicitud[0].estado}
                 </f:facet>
                 <p:column headerText="Tipo de solicitud">
-                    #{soli.tiposolicitud}
+                    #{control_Tipo_Solicitud.obtenernombre(soli.tiposolicitud.id)}
                 </p:column>
                 <p:column headerText="Dependencia">
-                    #{soli.dependencia}
+                    #{control_Dependencia.obtenernombreDependencia(soli.dependencia.id)}
                 </p:column>
                 <p:column headerText="Descripcion">
                     #{soli.descripcionsolicitud}
@@ -31,10 +31,10 @@
                     #{soli.fecha}
                 </p:column>
                 <p:column headerText="respuesta">
-                    #{soli.respuesta}
+                    #{control_Solicitud.respuestaVacia()}
                 </p:column>
             </p:dataTable>
-            <h:commandButton value="Salir" action="#{control_Solicitud.salir()}" />
+            <h:commandButton value="Salir" action="#{control_Ciudadano.atrasMenuCiudadano()}" actionListener="#{control_Solicitud.borrardatospaginaconsulta()}" />
         </h:form>
     </h:body>
 </html>

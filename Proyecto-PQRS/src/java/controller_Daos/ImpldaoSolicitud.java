@@ -4,8 +4,8 @@
  */
 package controller_Daos;
 
-import dao.DataUtil;
 import dao.IDao;
+import dao.ManejadorBaseDatos;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,16 +22,7 @@ import model.Solicitud;
  */
 public class ImpldaoSolicitud implements IDao<Solicitud> {
 
-    private DataSource dataSource = DataUtil.getDs();
-
-   
-
-    /**
-     * @return the dataSource
-     */
-    public DataSource getDataSource() {
-        return dataSource;
-    }
+    ManejadorBaseDatos mdb = ManejadorBaseDatos.getInstancia();
 
     @Override
     public void setDataSource(DataSource ds) {
@@ -42,22 +33,25 @@ public class ImpldaoSolicitud implements IDao<Solicitud> {
     public void create(Solicitud soli) {
         PreparedStatement pst = null;
         try {
-            pst = dataSource.getConnection().prepareStatement("Insert Into solicitudes values(?,?,?,?,?,?,?,?,?)");
-            pst.setString(1, soli.getTiposolicitud());
+            mdb.conectar();
+            pst = mdb.getConexion().prepareStatement("Insert Into solicitudes values(?,?,?,?,?,?,?,?,?)");
+            pst.setInt(1, soli.getTiposolicitud().getId());
             pst.setInt(2, soli.getDependencia().getId());
-            pst.setString(3, soli.getCategoria());
+            pst.setInt(3, soli.getCategoria().getId());
             pst.setString(4, soli.getDescripcionsolicitud());
-            pst.setDate(5, (java.sql.Date) soli.getFecha());
-            pst.setInt(6, soli.getRadicado());
-            pst.setInt(7, soli.getUsuariosolicitud().getId());
-            pst.setString(8, soli.getRespuesta());
-            pst.setString(9, soli.getEstado());
-
+                        pst.setInt(5, soli.getUsuariosolicitud().getId());
+            pst.setDate(6, (java.sql.Date) soli.getFecha());
+            pst.setString(7, soli.getRespuesta());
+            pst.setString(8, "Pendiente");
+            pst.setInt(9, soli.getRadicado());
             pst.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
             //Logger.getLogger(ImpldaoCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ImpldaoSolicitud.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
+            mdb.desconectar(null);
             if (pst != null) {
                 try {
                     pst.close();
@@ -70,17 +64,19 @@ public class ImpldaoSolicitud implements IDao<Solicitud> {
 
     @Override
     public Solicitud select(int radicado) {
-       ResultSet rs = null;
+        ResultSet rs = null;
         PreparedStatement pst = null;
         Solicitud solicitud = null;
         try {
-            pst = dataSource.getConnection().prepareStatement("select * from solicitudes where radicado = ?");
-            pst.setString(1, "" + radicado);
+            mdb.conectar();
+            pst = mdb.getConexion().prepareStatement("select * from solicitudes where radicado = ?");
+            pst.setInt(1, radicado);
             rs = pst.executeQuery();
             while (rs.next()) {
                 solicitud = Solicitud.load(rs);
             }
         } finally {
+            mdb.desconectar(rs);
             if (rs != null) {
                 try {
                     rs.close();
@@ -102,18 +98,22 @@ public class ImpldaoSolicitud implements IDao<Solicitud> {
 
     @Override
     public List<Solicitud> selectAll() {
-    ResultSet rs = null;
+        ResultSet rs = null;
         PreparedStatement pst = null;
         List<Solicitud> listasolicitud = new LinkedList();
         try {
-            pst = dataSource.getConnection().prepareStatement("select * from solicitudes ");
+            mdb.conectar();
+            pst = mdb.getConexion().prepareStatement("select * from solicitudes ");
             rs = pst.executeQuery();
             while (rs.next()) {
                 listasolicitud.add(Solicitud.load(rs));
             }
         } catch (SQLException ex) {
             Logger.getLogger(ImpldaoSolicitud.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ImpldaoSolicitud.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
+            mdb.desconectar(rs);
             if (rs != null) {
                 try {
                     rs.close();
@@ -134,15 +134,20 @@ public class ImpldaoSolicitud implements IDao<Solicitud> {
 
     @Override
     public void delete(int radicado) {
-    PreparedStatement pst = null;
+        PreparedStatement pst = null;
         try {
-            pst = dataSource.getConnection().prepareStatement("delete from Solicitudes where radicado=?");
-            pst.setInt(1, radicado);
+            mdb.conectar();
+            pst = mdb.getConexion().prepareStatement("Update Solicitudes set estado=? where radicado=?");
+            pst.setString(1, "Cancelada");
+            pst.setInt(2, radicado);
             pst.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
             //Logger.getLogger(ImpldaoCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ImpldaoSolicitud.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
+            mdb.desconectar(null);
             if (pst != null) {
                 try {
                     pst.close();
@@ -155,12 +160,13 @@ public class ImpldaoSolicitud implements IDao<Solicitud> {
 
     @Override
     public void modificar(Solicitud solicitud) {
-    PreparedStatement pst = null;
+        PreparedStatement pst = null;
         try {
-            pst = dataSource.getConnection().prepareStatement("Update Solicitudes set tiposolicitud=?"
+            mdb.conectar();
+            pst = mdb.getConexion().prepareStatement("Update Solicitudes set tiposolicitud=?"
                     + ",dependencia=?,descripcionsolicitud=?"
                     + ",fecha=?,radicado=?,respuesta=? where radicado=?");
-            pst.setString(1, solicitud.getTiposolicitud());
+            pst.setInt(1, solicitud.getTiposolicitud().getId());
             pst.setInt(2, solicitud.getDependencia().getId());
             pst.setString(3, solicitud.getDescripcionsolicitud());
             pst.setInt(4, solicitud.getUsuariosolicitud().getId());
@@ -171,7 +177,10 @@ public class ImpldaoSolicitud implements IDao<Solicitud> {
         } catch (SQLException ex) {
             ex.printStackTrace();
             //Logger.getLogger(ImpldaoCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ImpldaoSolicitud.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
+            mdb.desconectar(null);
             if (pst != null) {
                 try {
                     pst.close();
@@ -181,12 +190,12 @@ public class ImpldaoSolicitud implements IDao<Solicitud> {
             }
         }
     }
-   
-    
+
     public void updateRespuesta(String resp, int radicado, String estado) {
         PreparedStatement pst = null;
         try {
-            pst = dataSource.getConnection().prepareStatement("Update Solicitudes set respuesta=?,estado=? where radicado=?");
+            mdb.conectar();
+            pst = mdb.getConexion().prepareStatement("Update Solicitudes set respuesta=?,estado=? where radicado=?");
             pst.setString(1, resp);
             pst.setString(2, estado);
             pst.setInt(3, radicado);
@@ -194,7 +203,10 @@ public class ImpldaoSolicitud implements IDao<Solicitud> {
         } catch (SQLException ex) {
             ex.printStackTrace();
             //Logger.getLogger(ImpldaoCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ImpldaoSolicitud.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
+            mdb.desconectar(null);
             if (pst != null) {
                 try {
                     pst.close();
@@ -204,19 +216,22 @@ public class ImpldaoSolicitud implements IDao<Solicitud> {
             }
         }
     }
-    
+
     public List<Solicitud> consultarSolicitud(int radicado) {
         ResultSet rs = null;
         PreparedStatement pst = null;
         List<Solicitud> listasolicitud = new LinkedList();
         try {
-            pst = dataSource.getConnection().prepareStatement("SELECT tiposolicitud,dependencia,descripcionSolicitud,fecha,respuesta FROM solicitudes WHERE radicado = ? ");
+            mdb.conectar();
+            pst = mdb.getConexion().prepareStatement("SELECT tiposolicitud,dependencia,descripcionSolicitud,fecha,respuesta,estado FROM solicitudes WHERE radicado = ?");
             pst.setInt(1, radicado);
             rs = pst.executeQuery();
             while (rs.next()) {
                 listasolicitud.add(Solicitud.load2(rs));
             }
         } catch (SQLException ex) {
+            Logger.getLogger(ImpldaoSolicitud.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
             Logger.getLogger(ImpldaoSolicitud.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (rs != null) {
@@ -233,22 +248,24 @@ public class ImpldaoSolicitud implements IDao<Solicitud> {
                     Logger.getLogger(ImpldaoSolicitud.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+            mdb.desconectar(null);
         }
         return listasolicitud;
     }
-    
-    
+
     public int numradicado() {
         ResultSet rs = null;
         PreparedStatement pst = null;
         int radicado = 0;
         try {
-            pst = dataSource.getConnection().prepareStatement("SELECT radicado FROM solicitudes ORDER BY radicado DESC LIMIT 1");
+            mdb.conectar();
+            pst = mdb.getConexion().prepareStatement("SELECT radicado FROM solicitudes ORDER BY radicado DESC LIMIT 1");
             rs = pst.executeQuery();
             while (rs.next()) {
                 radicado = Solicitud.rad(rs);
             }
         } finally {
+            mdb.desconectar(rs);
             if (rs != null) {
                 try {
                     rs.close();

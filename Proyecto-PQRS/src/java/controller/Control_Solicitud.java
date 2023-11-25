@@ -5,12 +5,16 @@
 package controller;
 
 import controller_Daos.ImpldaoSolicitud;
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import model.Categoria;
+import model.Dependencia;
 import model.Solicitud;
+import model.Tipo_Solicitud;
+import model.Usuario;
 
 /**
  *
@@ -18,7 +22,7 @@ import model.Solicitud;
  */
 @ManagedBean
 @SessionScoped
-public class Control_Solicitud {
+public class Control_Solicitud implements Serializable {
 
     /**
      * Creates a new instance of Control_Solicitud
@@ -30,27 +34,83 @@ public class Control_Solicitud {
     private int numeroradicado = 0;
     private int numeroradicadocancelar = 0;
     private List<Solicitud> listasolicitud = new LinkedList();
-    @ManagedProperty("#{control_Ciudadano}")
-    private Control_Ciudadano ciucon = new Control_Ciudadano();
-    
-    
+
     public void consultaSolicitud() {
         ImpldaoSolicitud imsoli = new ImpldaoSolicitud();
         listasolicitud = imsoli.consultarSolicitud(numeroradicado);
         numeroradicado = 0;
     }
-    
-    public void cancelarSolicitud(){
+
+    public void cancelarSolicitud() {
         ImpldaoSolicitud imsoli = new ImpldaoSolicitud();
         imsoli.delete(numeroradicadocancelar);
-        numeroradicadocancelar=0;
-        
+        numeroradicadocancelar = 0;
+
+    }
+
+    public void agregarTipoSolicitudSolicitud(int tiposoli) {
+        solicitud.setTiposolicitud(new Tipo_Solicitud(tiposoli, ""));
+    }
+
+    public void agregarDependenciaSolicitud(int dependencia) {
+        solicitud.setDependencia(new Dependencia("", dependencia));
+    }
+
+    public void agregarCategoriaSolicitud(int categoria) {
+        solicitud.setCategoria(new Categoria(categoria, "", new Dependencia()));
+    }
+
+    public void agregarMedioRespuesta(String medio) {
+
     }
     
-    public void salir(){
-        ciucon.setMostrarMenu(true);
-        ciucon.setPaginanew("");
+    public void agregarFecha(java.sql.Date fecha){
+        solicitud.setFecha(fecha);
+    }
+    
+    public void agregarUserId(int id){
+        solicitud.setUsuariosolicitud(new Usuario(id, "", "", "", "", "", "", ""));
+    }
+    
+    
+
+    public void Registrar_Solicitud() {
+        if (validarCampos()) {
+            ImpldaoSolicitud imsoli = new ImpldaoSolicitud();
+            imsoli.create(solicitud);
+        } else {
+            // Mostrar un mensaje de error o realizar alguna acción en caso de campos vacíos
+        }
+    }
+
+    public void borrardatospaginaconsulta() {
+        numeroradicado = 0;
         listasolicitud.clear();
+    }
+
+    private boolean validarCampos() {
+        if (solicitud.getTiposolicitud() == null || solicitud.getDependencia() == null
+                || solicitud.getCategoria() == null || solicitud.getDescripcionsolicitud() == null
+                || solicitud.getDescripcionsolicitud().trim().isEmpty()) {
+            // Si algún campo obligatorio está vacío o nulo, retorna false
+            return false;
+        }
+        return true;
+    }
+
+    public String respuestaVacia() {
+        String respuesta = null;
+        if (solicitud.getRespuesta() == null) {
+            respuesta = "No hay respuestas disponibles";
+        } else {
+            respuesta = solicitud.getRespuesta();
+        }
+        return respuesta;
+    }
+
+    public void obtenerDatos() {
+        System.out.println("Tipo Solicitud" + solicitud.getTiposolicitud().getId()
+                + " Dependencia:" + solicitud.getDependencia().getId() + " Categoria:" + solicitud.getCategoria().getId() + " Descripcion:" + solicitud.getDescripcionsolicitud());
     }
 
     /**
@@ -107,20 +167,6 @@ public class Control_Solicitud {
      */
     public void setListasolicitud(List<Solicitud> listasolicitud) {
         this.listasolicitud = listasolicitud;
-    }
-
-    /**
-     * @return the ciucon
-     */
-    public Control_Ciudadano getCiucon() {
-        return ciucon;
-    }
-
-    /**
-     * @param ciucon the ciucon to set
-     */
-    public void setCiucon(Control_Ciudadano ciucon) {
-        this.ciucon = ciucon;
     }
 
 }

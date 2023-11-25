@@ -5,8 +5,8 @@
 package controller_Daos;
 
 import com.mysql.jdbc.Statement;
-import dao.DataUtil;
 import dao.IDao;
+import dao.ManejadorBaseDatos;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,7 +23,7 @@ import model.Administrador;
  */
 public class ImpldaoAdministrador implements IDao<Administrador> {
 
-    private DataSource dataSource = DataUtil.getDs();
+   ManejadorBaseDatos mdb = ManejadorBaseDatos.getInstancia();
 
     @Override
     public void setDataSource(DataSource ds) {
@@ -37,8 +37,9 @@ public class ImpldaoAdministrador implements IDao<Administrador> {
         ResultSet generatedKeys = null;
 
         try {
+            mdb.conectar();
             // Primera sentencia para insertar en la tabla 'usuarios'
-            pst1 = dataSource.getConnection().prepareStatement(
+            pst1 = mdb.getConexion().prepareStatement(
                     "INSERT INTO usuarios (nombres, apellidos, tipoidentificacion, numeroidentificacion, usuario, contraseña, rol) VALUES (?, ?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
 
@@ -61,12 +62,12 @@ public class ImpldaoAdministrador implements IDao<Administrador> {
                     int lastId = generatedKeys.getInt(1);
 
                     // Segunda sentencia para insertar en la tabla 'ciudadanos'
-                    pst2 = dataSource.getConnection().prepareStatement(
+                    pst2 = mdb.getConexion().prepareStatement(
                             "INSERT INTO administradores (id, correo, dependencia) VALUES (?, ?)");
 
                     pst2.setInt(1, lastId);
                     pst2.setString(2, admin.getCorreo());
-                    pst2.setString(3, admin.getDependencia());
+                    pst2.setInt(3, admin.getDependencia().getId());
 
                     // Ejecutar la segunda sentencia
                     pst2.executeUpdate();
@@ -75,7 +76,10 @@ public class ImpldaoAdministrador implements IDao<Administrador> {
 
         } catch (SQLException ex) {
             Logger.getLogger(ImpldaoAdministrador.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
+        } catch (Exception ex) {
+           Logger.getLogger(ImpldaoAdministrador.class.getName()).log(Level.SEVERE, null, ex);
+       } finally {
+            mdb.desconectar(generatedKeys);
             // Cerrar recursos
             if (pst1 != null) {
                 try {
@@ -110,7 +114,8 @@ public class ImpldaoAdministrador implements IDao<Administrador> {
         PreparedStatement pst = null;
         Administrador administrador = null;
         try {
-            pst = dataSource.getConnection().prepareStatement("SELECT usuarios.id, usuarios.nombres, usuarios.apellidos, usuarios.tipoidentificacion, usuarios.numeroidentificacion,\n"
+            mdb.conectar();
+            pst = mdb.getConexion().prepareStatement("SELECT usuarios.id, usuarios.nombres, usuarios.apellidos, usuarios.tipoidentificacion, usuarios.numeroidentificacion,\n"
                     + "       usuarios.usuario, usuarios.contraseña, usuarios.rol,\n"
                     + "       administradores.correo,administradores.dependencia\n"
                     + "FROM usuarios\n"
@@ -122,6 +127,7 @@ public class ImpldaoAdministrador implements IDao<Administrador> {
                 administrador = Administrador.load(rs);
             }
         } finally {
+            mdb.desconectar(rs);
             if (rs != null) {
                 try {
                     rs.close();
@@ -146,7 +152,8 @@ public class ImpldaoAdministrador implements IDao<Administrador> {
         PreparedStatement pst = null;
         List<Administrador> listaadministrador = new LinkedList();
         try {
-            pst = dataSource.getConnection().prepareStatement("SELECT usuarios.id, usuarios.nombres, usuarios.apellidos, usuarios.tipoidentificacion, usuarios.numeroidentificacion,\n"
+            mdb.conectar();
+            pst = mdb.getConexion().prepareStatement("SELECT usuarios.id, usuarios.nombres, usuarios.apellidos, usuarios.tipoidentificacion, usuarios.numeroidentificacion,\n"
                     + "       usuarios.usuario, usuarios.contraseña, usuarios.rol,\n"
                     + "       administradores.correo,administradores.dependencia\n"
                     + "FROM usuarios\n"
@@ -157,7 +164,10 @@ public class ImpldaoAdministrador implements IDao<Administrador> {
             }
         } catch (SQLException ex) {
             Logger.getLogger(ImpldaoAdministrador.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
+        } catch (Exception ex) {
+           Logger.getLogger(ImpldaoAdministrador.class.getName()).log(Level.SEVERE, null, ex);
+       } finally {
+            mdb.desconectar(rs);
             if (rs != null) {
                 try {
                     rs.close();
@@ -181,19 +191,23 @@ public class ImpldaoAdministrador implements IDao<Administrador> {
         PreparedStatement pstUsuarios = null;
         PreparedStatement pstAdministradores = null;
         try {
+            mdb.conectar();
             // Eliminar de la tabla 'usuarios'
-            pstUsuarios = dataSource.getConnection().prepareStatement("DELETE FROM usuarios WHERE id=?");
+            pstUsuarios = mdb.getConexion().prepareStatement("DELETE FROM usuarios WHERE id=?");
             pstUsuarios.setInt(1, id);
             pstUsuarios.executeUpdate();
 
             // Eliminar de la tabla 'ciudadanos'
-            pstAdministradores = dataSource.getConnection().prepareStatement("DELETE FROM administradores WHERE id =?");
+            pstAdministradores = mdb.getConexion().prepareStatement("DELETE FROM administradores WHERE id =?");
             pstAdministradores.setInt(1, id);
             pstAdministradores.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(ImpldaoAdministrador.class.getName()).log(Level.SEVERE, null, ex);
             //Logger.getLogger(ImpldaoCliente.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
+        } catch (Exception ex) {
+           Logger.getLogger(ImpldaoAdministrador.class.getName()).log(Level.SEVERE, null, ex);
+       } finally {
+            mdb.desconectar(null);
             // Cerrar recursos en bloques individuales
             if (pstUsuarios != null) {
                 try {
@@ -219,8 +233,9 @@ public class ImpldaoAdministrador implements IDao<Administrador> {
         PreparedStatement pstCiudadanos = null;
 
         try {
+            mdb.conectar();
             // Actualizar la tabla 'usuarios'
-            pstUsuarios = dataSource.getConnection().prepareStatement(
+            pstUsuarios = mdb.getConexion().prepareStatement(
                     "UPDATE usuarios SET nombres=?, apellidos=?, tipoidentificacion=?, numeroidentificacion=?, usuario=?, contraseña=?, rol=? WHERE id=?");
 
             pstUsuarios.setString(1, administrador.getNombres());
@@ -235,11 +250,11 @@ public class ImpldaoAdministrador implements IDao<Administrador> {
             pstUsuarios.executeUpdate();
 
             // Actualizar la tabla 'ciudadanos'
-            pstCiudadanos = dataSource.getConnection().prepareStatement(
+            pstCiudadanos = mdb.getConexion().prepareStatement(
                     "UPDATE administradores SET correo=?, dependencia=? WHERE id=?");
 
             pstCiudadanos.setString(1, administrador.getCorreo());
-            pstCiudadanos.setString(2, administrador.getDependencia());
+            pstCiudadanos.setInt(2, administrador.getDependencia().getId());
             pstCiudadanos.setInt(3, administrador.getId());
 
             pstCiudadanos.executeUpdate();
@@ -247,7 +262,10 @@ public class ImpldaoAdministrador implements IDao<Administrador> {
         } catch (SQLException ex) {
             Logger.getLogger(ImpldaoAdministrador.class.getName()).log(Level.SEVERE, null, ex);
             // Puedes manejar la excepción según tus requisitos
-        } finally {
+        } catch (Exception ex) {
+           Logger.getLogger(ImpldaoAdministrador.class.getName()).log(Level.SEVERE, null, ex);
+       } finally {
+            mdb.desconectar(null);
             // Cerrar recursos en bloques individuales
             if (pstUsuarios != null) {
                 try {
@@ -266,12 +284,4 @@ public class ImpldaoAdministrador implements IDao<Administrador> {
             }
         }
     }
-
-    /**
-     * @return the dataSource
-     */
-    public DataSource getDataSource() {
-        return dataSource;
-    }
-
 }

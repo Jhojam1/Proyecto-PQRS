@@ -4,8 +4,8 @@
  */
 package controller_Daos;
 
-import dao.DataUtil;
 import dao.IDao;
+import dao.ManejadorBaseDatos;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,14 +22,9 @@ import model.Dependencia;
  */
 public class ImpldaoDependencia implements IDao<Dependencia> {
 
-    private DataSource dataSource = DataUtil.getDs();
+    ManejadorBaseDatos mdb = ManejadorBaseDatos.getInstancia();
 
-    /**
-     * @return the dataSource
-     */
-    public DataSource getDataSource() {
-        return dataSource;
-    }
+
 
     @Override
     public void setDataSource(DataSource ds) {
@@ -40,14 +35,18 @@ public class ImpldaoDependencia implements IDao<Dependencia> {
     public void create(Dependencia depend) {
         PreparedStatement pst = null;
         try {
-            pst = dataSource.getConnection().prepareStatement("Insert Into dependencias values(?,?)");
+            mdb.conectar();
+            pst = mdb.getConexion().prepareStatement("Insert Into dependencias values(?,?)");
             pst.setString(1, depend.getNombre());
             pst.setInt(2, depend.getId());
             pst.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
             //Logger.getLogger(ImpldaoCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ImpldaoDependencia.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
+            mdb.desconectar(null);
             if (pst != null) {
                 try {
                     pst.close();
@@ -64,13 +63,15 @@ public class ImpldaoDependencia implements IDao<Dependencia> {
         PreparedStatement pst = null;
         Dependencia dependencia = null;
         try {
-            pst = dataSource.getConnection().prepareStatement("select * from cependencias where id = ?");
+            mdb.conectar();
+            pst = mdb.getConexion().prepareStatement("select * from dependencias where id = ?");
             pst.setString(1, "" + id);
             rs = pst.executeQuery();
             while (rs.next()) {
                 dependencia = Dependencia.load(rs);
             }
         } finally {
+            mdb.desconectar(rs);
             if (rs != null) {
                 try {
                     rs.close();
@@ -95,7 +96,8 @@ public class ImpldaoDependencia implements IDao<Dependencia> {
         PreparedStatement pst = null;
         List<Dependencia> listadependencia = new LinkedList();
         try {
-            pst = dataSource.getConnection().prepareStatement("select * from dependencias ");
+            mdb.conectar();
+            pst = mdb.getConexion().prepareStatement("select * from dependencias ");
             rs = pst.executeQuery();
             while (rs.next()) {
                 listadependencia.add(Dependencia.load(rs));
@@ -103,6 +105,7 @@ public class ImpldaoDependencia implements IDao<Dependencia> {
         } catch (SQLException ex) {
             Logger.getLogger(ImpldaoDependencia.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
+            mdb.desconectar(rs);
             if (rs != null) {
                 try {
                     rs.close();
@@ -126,13 +129,17 @@ public class ImpldaoDependencia implements IDao<Dependencia> {
     public void delete(int id) {
         PreparedStatement pst = null;
         try {
-            pst = dataSource.getConnection().prepareStatement("delete from dependencias where id=?");
+            mdb.conectar();
+            pst = mdb.getConexion().prepareStatement("delete from dependencias where id=?");
             pst.setInt(1, id);
             pst.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
             //Logger.getLogger(ImpldaoCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ImpldaoDependencia.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
+            mdb.desconectar(null);
             if (pst != null) {
                 try {
                     pst.close();
@@ -147,7 +154,8 @@ public class ImpldaoDependencia implements IDao<Dependencia> {
     public void modificar(Dependencia depend) {
         PreparedStatement pst = null;
         try {
-            pst = dataSource.getConnection().prepareStatement("Update dependencias set nombredependencia=?,id=? where id=?");
+            mdb.conectar();
+            pst = mdb.getConexion().prepareStatement("Update dependencias set nombredependencia=?,id=? where id=?");
             pst.setString(1, depend.getNombre());
             pst.setInt(2, depend.getId());
             pst.setInt(3, depend.getId());
@@ -155,7 +163,10 @@ public class ImpldaoDependencia implements IDao<Dependencia> {
         } catch (SQLException ex) {
             ex.printStackTrace();
             //Logger.getLogger(ImpldaoCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ImpldaoDependencia.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
+            mdb.desconectar(null);
             if (pst != null) {
                 try {
                     pst.close();

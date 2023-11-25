@@ -5,6 +5,7 @@
 package controller;
 
 import controller_Daos.ImpldaoInicioSesion;
+import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -19,7 +20,7 @@ import model.Usuario;
  */
 @ManagedBean
 @SessionScoped
-public class Control_Usuario {
+public class Control_Usuario implements Serializable {
 
     /**
      * Creates a new instance of Control_Usuario
@@ -51,19 +52,25 @@ public class Control_Usuario {
         }
         if (credencialesCorrectas == true) {
             if ("Ciudadano".equals(currentUser.getRol())) {
+                getCiucon().getCtcon().getTiposolicitudOptions();
+                getCiucon().getCatcon().getCategoriaOptions();
+                System.out.println("en lista hay: "+getCiucon().getCatcon().getListacategorias().size());
+                getCiucon().getDepcon().getDependenciasOptions();
+                System.out.println("en lista de dependencias hay:" +getCiucon().getDepcon().getListadependencias().size());
+                Ciudadano ciudadano = getCiucon().impciu.select(currentUser.getId());
+                getCiucon().setCiudadanologeado(ciudadano);
                 pagina_nueva = "/Ciudadano/MenuCiudadano.xhtml";
-                Ciudadano ciudadano = ciucon.impciu.select(currentUser.getId());
-                ciucon.setCiudadanologeado(ciudadano);
+
             }
             if ("Secretario de despacho".equals(currentUser.getRol())) {
                 pagina_nueva = "/Secretario_de_despacho/MenuSecretariosDeDespacho.xhtml";
-                Secretario_de_despacho secretario = secrecon.getImplsecre().select(currentUser.getId());
-                secrecon.setSecretario(secretario);
+                Secretario_de_despacho secretario = getSecrecon().getImplsecre().select(currentUser.getId());
+                getSecrecon().setSecretario(secretario);
             }
             if ("Administrador".equals(currentUser.getRol())) {
                 pagina_nueva = "/Administrador/MenuAdministrador.xhtml";
-                Administrador administrador = admcon.getImpadm().select(currentUser.getId());
-                admcon.setAdmin(administrador);
+                Administrador administrador = getAdmcon().getImpadm().select(currentUser.getId());
+                getAdmcon().setAdmin(administrador);
             }
         }
     }

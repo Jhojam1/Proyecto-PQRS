@@ -4,6 +4,8 @@
  */
 package model;
 
+import controller_Daos.ImpldaoDependencia;
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -11,19 +13,19 @@ import java.sql.SQLException;
  *
  * @author User
  */
-public class Secretario_de_despacho extends Usuario{
+public class Secretario_de_despacho extends Usuario implements Serializable{
     private String correo;
-    private String dependencia;
+    private Dependencia dependencia;
 
     public Secretario_de_despacho() {
     }
 
-    public Secretario_de_despacho(String correo, String dependencia) {
+    public Secretario_de_despacho(String correo, Dependencia dependencia) {
         this.correo = correo;
         this.dependencia = dependencia;
     }
 
-    public Secretario_de_despacho(String correo, String dependencia, int id, String nombres, String apellidos, String tipoidentificacion, String numeroidentificacion, String usuario, String contraseña, String rol) {
+    public Secretario_de_despacho(String correo, Dependencia dependencia, int id, String nombres, String apellidos, String tipoidentificacion, String numeroidentificacion, String usuario, String contraseña, String rol) {
         super(id, nombres, apellidos, tipoidentificacion, numeroidentificacion, usuario, contraseña, rol);
         this.correo = correo;
         this.dependencia = dependencia;
@@ -31,6 +33,7 @@ public class Secretario_de_despacho extends Usuario{
 
     public static Secretario_de_despacho load(ResultSet rs) throws SQLException {
         Secretario_de_despacho secretario = new Secretario_de_despacho();
+        ImpldaoDependencia imdep = new ImpldaoDependencia();
         secretario.setId(rs.getInt(1));
         secretario.setNombres(rs.getString(2));
         secretario.setApellidos(rs.getString(3));
@@ -40,7 +43,7 @@ public class Secretario_de_despacho extends Usuario{
         secretario.setContraseña(rs.getString(7));
         secretario.setRol(rs.getString(8));
         secretario.setCorreo(rs.getString(9));
-        secretario.setDependencia(rs.getString(10));
+        secretario.setDependencia(imdep.select(rs.getInt(10)));
         return secretario;
     }
     
@@ -61,14 +64,14 @@ public class Secretario_de_despacho extends Usuario{
     /**
      * @return the dependencia
      */
-    public String getDependencia() {
+    public Dependencia getDependencia() {
         return dependencia;
     }
 
     /**
      * @param dependencia the dependencia to set
      */
-    public void setDependencia(String dependencia) {
+    public void setDependencia(Dependencia dependencia) {
         this.dependencia = dependencia;
     }
     

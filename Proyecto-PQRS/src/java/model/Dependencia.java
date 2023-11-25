@@ -4,10 +4,11 @@
  */
 package model;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Dependencia {
+public class Dependencia implements Serializable {
 
     private String nombre;
     private int id;
@@ -22,8 +23,9 @@ public class Dependencia {
 
     public static Dependencia load(ResultSet rs) throws SQLException {
         Dependencia dependencia = new Dependencia();
-        dependencia.setNombre(rs.getString(1));
-        dependencia.setId(rs.getInt(2));
+        dependencia.setId(rs.getInt(1));
+        dependencia.setNombre(rs.getString(2));
+        
         return dependencia;
     }
 

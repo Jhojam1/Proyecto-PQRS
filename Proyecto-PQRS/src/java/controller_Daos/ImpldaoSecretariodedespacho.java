@@ -5,8 +5,8 @@
 package controller_Daos;
 
 import com.mysql.jdbc.Statement;
-import dao.DataUtil;
 import dao.IDao;
+import dao.ManejadorBaseDatos;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,7 +23,7 @@ import model.Secretario_de_despacho;
  */
 public class ImpldaoSecretariodedespacho implements IDao<Secretario_de_despacho> {
 
-    private DataSource dataSource = DataUtil.getDs();
+    ManejadorBaseDatos mdb = ManejadorBaseDatos.getInstancia();
 
     @Override
     public void setDataSource(DataSource ds) {
@@ -38,7 +38,8 @@ public class ImpldaoSecretariodedespacho implements IDao<Secretario_de_despacho>
 
         try {
             // Primera sentencia para insertar en la tabla 'usuarios'
-            pst1 = dataSource.getConnection().prepareStatement(
+            mdb.conectar();
+            pst1 = mdb.getConexion().prepareStatement(
                     "INSERT INTO usuarios (nombres, apellidos, tipoidentificacion, numeroidentificacion, usuario, contraseña, rol) VALUES (?, ?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
 
@@ -61,12 +62,12 @@ public class ImpldaoSecretariodedespacho implements IDao<Secretario_de_despacho>
                     int lastId = generatedKeys.getInt(1);
 
                     // Segunda sentencia para insertar en la tabla 'ciudadanos'
-                    pst2 = dataSource.getConnection().prepareStatement(
+                    pst2 = mdb.getConexion().prepareStatement(
                             "INSERT INTO secretariosdespacho (id, correo, dependencia) VALUES (?, ?)");
 
                     pst2.setInt(1, lastId);
                     pst2.setString(2, secretario.getCorreo());
-                    pst2.setString(3, secretario.getDependencia());
+                    pst2.setInt(3, secretario.getDependencia().getId());
 
                     // Ejecutar la segunda sentencia
                     pst2.executeUpdate();
@@ -75,8 +76,11 @@ public class ImpldaoSecretariodedespacho implements IDao<Secretario_de_despacho>
 
         } catch (SQLException ex) {
             Logger.getLogger(ImpldaoSecretariodedespacho.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ImpldaoSecretariodedespacho.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            // Cerrar recursos
+            mdb.desconectar(generatedKeys);
+// Cerrar recursos
             if (pst1 != null) {
                 try {
                     pst1.close();
@@ -110,7 +114,8 @@ public class ImpldaoSecretariodedespacho implements IDao<Secretario_de_despacho>
         PreparedStatement pst = null;
         Secretario_de_despacho secretario = null;
         try {
-            pst = dataSource.getConnection().prepareStatement("SELECT usuarios.id, usuarios.nombres, usuarios.apellidos, usuarios.tipoidentificacion, usuarios.numeroidentificacion,\n"
+            mdb.conectar();
+            pst = mdb.getConexion().prepareStatement("SELECT usuarios.id, usuarios.nombres, usuarios.apellidos, usuarios.tipoidentificacion, usuarios.numeroidentificacion,\n"
                     + "       usuarios.usuario, usuarios.contraseña, usuarios.rol,\n"
                     + "       secretariosdespacho.correo,secretariosdespacho.dependencia\n"
                     + "FROM usuarios\n"
@@ -121,6 +126,7 @@ public class ImpldaoSecretariodedespacho implements IDao<Secretario_de_despacho>
                 secretario = Secretario_de_despacho.load(rs);
             }
         } finally {
+            mdb.desconectar(rs);
             if (rs != null) {
                 try {
                     rs.close();
@@ -145,7 +151,8 @@ public class ImpldaoSecretariodedespacho implements IDao<Secretario_de_despacho>
         PreparedStatement pst = null;
         List<Secretario_de_despacho> listasecretarios = new LinkedList();
         try {
-            pst = dataSource.getConnection().prepareStatement("SELECT usuarios.id, usuarios.nombres, usuarios.apellidos, usuarios.tipoidentificacion, usuarios.numeroidentificacion,\n"
+            mdb.conectar();
+            pst = mdb.getConexion().prepareStatement("SELECT usuarios.id, usuarios.nombres, usuarios.apellidos, usuarios.tipoidentificacion, usuarios.numeroidentificacion,\n"
                     + "       usuarios.usuario, usuarios.contraseña, usuarios.rol,\n"
                     + "       secretariosdespacho.correo,secretariosdespacho.dependencia\n"
                     + "FROM usuarios\n"
@@ -156,7 +163,10 @@ public class ImpldaoSecretariodedespacho implements IDao<Secretario_de_despacho>
             }
         } catch (SQLException ex) {
             Logger.getLogger(ImpldaoSecretariodedespacho.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ImpldaoSecretariodedespacho.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
+            mdb.desconectar(rs);
             if (rs != null) {
                 try {
                     rs.close();
@@ -181,18 +191,22 @@ public class ImpldaoSecretariodedespacho implements IDao<Secretario_de_despacho>
         PreparedStatement pstSecretariodedespacho = null;
         try {
             // Eliminar de la tabla 'usuarios'
-            pstUsuarios = dataSource.getConnection().prepareStatement("DELETE FROM usuarios WHERE id=?");
+            mdb.conectar();
+            pstUsuarios = mdb.getConexion().prepareStatement("DELETE FROM usuarios WHERE id=?");
             pstUsuarios.setInt(1, id);
             pstUsuarios.executeUpdate();
 
             // Eliminar de la tabla 'ciudadanos'
-            pstSecretariodedespacho = dataSource.getConnection().prepareStatement("DELETE FROM secretariosdespacho WHERE id =?");
+            pstSecretariodedespacho = mdb.getConexion().prepareStatement("DELETE FROM secretariosdespacho WHERE id =?");
             pstSecretariodedespacho.setInt(1, id);
             pstSecretariodedespacho.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(ImpldaoSecretariodedespacho.class.getName()).log(Level.SEVERE, null, ex);
             //Logger.getLogger(ImpldaoCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ImpldaoSecretariodedespacho.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
+            mdb.desconectar(null);
             // Cerrar recursos en bloques individuales
             if (pstUsuarios != null) {
                 try {
@@ -218,8 +232,9 @@ public class ImpldaoSecretariodedespacho implements IDao<Secretario_de_despacho>
         PreparedStatement pstSecretarios = null;
 
         try {
+            mdb.conectar();
             // Actualizar la tabla 'usuarios'
-            pstUsuarios = dataSource.getConnection().prepareStatement(
+            pstUsuarios = mdb.getConexion().prepareStatement(
                     "UPDATE usuarios SET nombres=?, apellidos=?, tipoidentificacion=?, numeroidentificacion=?, usuario=?, contraseña=?, rol=? WHERE id=?");
 
             pstUsuarios.setString(1, secretario.getNombres());
@@ -234,11 +249,11 @@ public class ImpldaoSecretariodedespacho implements IDao<Secretario_de_despacho>
             pstUsuarios.executeUpdate();
 
             // Actualizar la tabla 'ciudadanos'
-            pstSecretarios = dataSource.getConnection().prepareStatement(
+            pstSecretarios = mdb.getConexion().prepareStatement(
                     "UPDATE secretariosdespacho SET correo=?, dependencia=? WHERE id=?");
 
             pstSecretarios.setString(1, secretario.getCorreo());
-            pstSecretarios.setString(2, secretario.getDependencia());
+            pstSecretarios.setInt(2, secretario.getDependencia().getId());
             pstSecretarios.setInt(3, secretario.getId());
 
             pstSecretarios.executeUpdate();
@@ -246,7 +261,10 @@ public class ImpldaoSecretariodedespacho implements IDao<Secretario_de_despacho>
         } catch (SQLException ex) {
             Logger.getLogger(ImpldaoSecretariodedespacho.class.getName()).log(Level.SEVERE, null, ex);
             // Puedes manejar la excepción según tus requisitos
+        } catch (Exception ex) {
+            Logger.getLogger(ImpldaoSecretariodedespacho.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
+            mdb.desconectar(null);
             // Cerrar recursos en bloques individuales
             if (pstUsuarios != null) {
                 try {
@@ -265,12 +283,4 @@ public class ImpldaoSecretariodedespacho implements IDao<Secretario_de_despacho>
             }
         }
     }
-
-    /**
-     * @return the dataSource
-     */
-    public DataSource getDataSource() {
-        return dataSource;
-    }
-
 }
