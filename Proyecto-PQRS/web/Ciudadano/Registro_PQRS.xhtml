@@ -32,7 +32,6 @@
                             <h:commandButton value="#{dep.nombre}" actionListener="#{control_Ciudadano.obtenerCategoriasXDependencia(dep)}" />
                         </p:panel>                        
                     </p:dataGrid>
-
                 </td>
             </tr>
             <tr>
@@ -45,7 +44,17 @@
                             <h:commandButton value="#{cat.nombre}" action="#{control_Solicitud.agregarCategoriaSolicitud(cat.id)}"/>
                         </p:panel>
                     </p:dataGrid>
-
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h:outputText value="Medio de respuesta" />
+                </td>
+                <td>
+                    <p:panelGrid columns="2">
+                        <h:commandButton value="Direccion" action="#{control_Solicitud.agregarMedioRespuesta('Direccion')}"/>
+                        <h:commandButton value="Correo Electronico" action="#{control_Solicitud.agregarMedioRespuesta('Correo Electronico')}"/>
+                    </p:panelGrid>
                 </td>
             </tr>
             <tr>
@@ -58,7 +67,7 @@
             </tr>
         </table>
 
-        <h:commandButton value="Enviar Solicitud" action="#{control_Ciudadano.Registrar_Solicitud()}"/>
+        <h:commandButton value="Enviar Solicitud" action="#{control_Ciudadano.Registrar_Solicitud()}" />
         <h:commandButton value="Salir" action="#{control_Ciudadano.salir()}" />  
     </h:body>
 </html>

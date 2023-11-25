@@ -62,7 +62,7 @@ public class Control_Solicitud implements Serializable {
     }
 
     public void agregarMedioRespuesta(String medio) {
-
+        solicitud.setMediorespuesta(medio);
     }
 
     public void agregarFecha(java.sql.Date fecha) {
@@ -101,7 +101,7 @@ public class Control_Solicitud implements Serializable {
     private boolean validarCampos() {
         if (solicitud.getTiposolicitud() == null || solicitud.getDependencia() == null
                 || solicitud.getCategoria() == null || solicitud.getDescripcionsolicitud() == null
-                || solicitud.getDescripcionsolicitud().trim().isEmpty()) {
+                || solicitud.getDescripcionsolicitud().trim().isEmpty() || solicitud.getMediorespuesta() == null)  {
             // Si algún campo obligatorio está vacío o nulo, retorna false
             return false;
         }

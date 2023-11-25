@@ -1,7 +1,5 @@
 package model;
 
-import controller.Control_Dependencia;
-import controller.Control_Tipo_Solicitud;
 import controller_Daos.ImpldaoCategoria;
 import controller_Daos.ImpldaoCiudadano;
 import controller_Daos.ImpldaoDependencia;
@@ -22,11 +20,12 @@ public class Solicitud implements Serializable {
     private String respuesta;
     private String estado;
     private int radicado;
+    private String mediorespuesta;
 
     public Solicitud() {
     }
 
-    public Solicitud(Tipo_Solicitud tiposolicitud, Dependencia dependencia, Categoria categoria, String descripcionsolicitud, Usuario usuariosolicitud, java.sql.Date fecha, String respuesta, String estado, int radicado) {
+    public Solicitud(Tipo_Solicitud tiposolicitud, Dependencia dependencia, Categoria categoria, String descripcionsolicitud, Usuario usuariosolicitud, java.sql.Date fecha, String respuesta, String estado, int radicado, String mediorespuesta) {
         this.tiposolicitud = tiposolicitud;
         this.dependencia = dependencia;
         this.categoria = categoria;
@@ -36,7 +35,11 @@ public class Solicitud implements Serializable {
         this.respuesta = respuesta;
         this.estado = estado;
         this.radicado = radicado;
+        this.mediorespuesta = mediorespuesta;
     }
+    
+    
+
 
     public static Solicitud load(ResultSet rs) throws SQLException {
         Solicitud soli = new Solicitud();
@@ -53,6 +56,7 @@ public class Solicitud implements Serializable {
         soli.setUsuariosolicitud(im.select(rs.getInt(7)));
         soli.setRespuesta(rs.getString(8));
         soli.setEstado(rs.getString(9));
+        soli.setMediorespuesta(rs.getString(10));
 
         return soli;
     }
@@ -197,6 +201,20 @@ public class Solicitud implements Serializable {
      */
     public void setDependencia(Dependencia dependencia) {
         this.dependencia = dependencia;
+    }
+
+    /**
+     * @return the mediorespuesta
+     */
+    public String getMediorespuesta() {
+        return mediorespuesta;
+    }
+
+    /**
+     * @param mediorespuesta the mediorespuesta to set
+     */
+    public void setMediorespuesta(String mediorespuesta) {
+        this.mediorespuesta = mediorespuesta;
     }
 
 }

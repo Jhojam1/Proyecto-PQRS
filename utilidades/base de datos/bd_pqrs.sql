@@ -23,38 +23,45 @@ DROP TABLE IF EXISTS `administradores`;
 CREATE TABLE `administradores` (
   `id` int(255) NOT NULL AUTO_INCREMENT,
   `correo` varchar(255) DEFAULT NULL,
-  `dependencia` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `dependencia` int(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `administrador-dependencia` (`dependencia`),
+  CONSTRAINT `administrador-dependencia` FOREIGN KEY (`dependencia`) REFERENCES `dependencias` (`id`),
+  CONSTRAINT `administrador-usuario` FOREIGN KEY (`id`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 /*Data for the table `administradores` */
 
 insert  into `administradores`(`id`,`correo`,`dependencia`) values 
-(2,'JhojamCaraballo@gmail.com','todas');
+(2,'JhojamCaraballo@gmail.com',1);
 
 /*Table structure for table `categorias` */
 
 DROP TABLE IF EXISTS `categorias`;
 
 CREATE TABLE `categorias` (
+  `id` int(255) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(255) DEFAULT NULL,
-  `dependencia` int(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `dependencia` int(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `categoria-dependencia` (`dependencia`),
+  CONSTRAINT `categoria-dependencia` FOREIGN KEY (`dependencia`) REFERENCES `dependencias` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 /*Data for the table `categorias` */
 
-insert  into `categorias`(`nombre`,`dependencia`) values 
-('Instituciones educativas (Casco urbano)',1),
-('Instituciones educativas (Corregimientos)',1),
-('Cultura',1),
-('PAE',1),
-('Atencion a inmigrantes',1),
-('Otros',1),
-('Obras públicas en construccion',2),
-('Daños en bienes publicos',2),
-('Licencias',2),
-('Agua potable y saneamiento basico',2),
-('Otros',2);
+insert  into `categorias`(`id`,`nombre`,`dependencia`) values 
+(1,'Instituciones educativas (Casco urbano)',1),
+(2,'Instituciones educativas (Corregimientos)',1),
+(3,'Cultura',1),
+(4,'PAE',1),
+(5,'Atencion a inmigrantes',1),
+(6,'Otros',1),
+(7,'Obras públicas en construccion',2),
+(8,'Daños en bienes publicos',2),
+(9,'Licencias',2),
+(10,'Agua potable y saneamiento basico',2),
+(11,'Otros',2);
 
 /*Table structure for table `ciudadanos` */
 
@@ -66,7 +73,8 @@ CREATE TABLE `ciudadanos` (
   `correo` varchar(255) DEFAULT NULL,
   `numerotelefono` int(255) DEFAULT NULL,
   `direccion` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  CONSTRAINT `ciudadano-usuario` FOREIGN KEY (`id`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*Data for the table `ciudadanos` */
@@ -79,18 +87,18 @@ insert  into `ciudadanos`(`id`,`tiposolicitante`,`correo`,`numerotelefono`,`dire
 DROP TABLE IF EXISTS `dependencias`;
 
 CREATE TABLE `dependencias` (
-  `nombre` varchar(255) DEFAULT NULL,
   `id` int(255) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 /*Data for the table `dependencias` */
 
-insert  into `dependencias`(`nombre`,`id`) values 
-('Secretaria de educacion',1),
-('Secretaria de planeacion',2),
-('Secretaria de salud',3),
-('Secretaria de gobierno',4);
+insert  into `dependencias`(`id`,`nombre`) values 
+(1,'Secretaria de educacion'),
+(2,'Secretaria de planeacion'),
+(3,'Secretaria de salud'),
+(4,'Secretaria de gobierno');
 
 /*Table structure for table `secretariosdespacho` */
 
@@ -99,8 +107,10 @@ DROP TABLE IF EXISTS `secretariosdespacho`;
 CREATE TABLE `secretariosdespacho` (
   `id` int(255) NOT NULL AUTO_INCREMENT,
   `correo` varchar(255) DEFAULT NULL,
-  `dependencia` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `dependencia` int(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `secretarios-dependencia` FOREIGN KEY (`id`) REFERENCES `dependencias` (`id`),
+  CONSTRAINT `secretarios-usuario` FOREIGN KEY (`id`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Data for the table `secretariosdespacho` */
@@ -110,22 +120,31 @@ CREATE TABLE `secretariosdespacho` (
 DROP TABLE IF EXISTS `solicitudes`;
 
 CREATE TABLE `solicitudes` (
-  `tipossolicitud` varchar(255) DEFAULT NULL,
+  `tiposolicitud` int(255) DEFAULT NULL,
   `dependencia` int(255) DEFAULT NULL,
-  `categoria` varchar(255) DEFAULT NULL,
+  `categoria` int(255) DEFAULT NULL,
   `descripcionsolicitud` varchar(255) DEFAULT NULL,
   `usuariosolicitud` int(255) DEFAULT NULL,
   `fecha` date DEFAULT NULL,
   `respuesta` varchar(255) DEFAULT NULL,
   `estado` varchar(255) DEFAULT NULL,
   `radicado` int(255) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`radicado`)
+  `mediorespuesta` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`radicado`),
+  KEY `solicitudes-tiposolicitud` (`tiposolicitud`),
+  KEY `solicitudes-dependencia` (`dependencia`),
+  KEY `solicitudes-categoria` (`categoria`),
+  KEY `solicitudes-usuario` (`usuariosolicitud`),
+  CONSTRAINT `solicitudes-categoria` FOREIGN KEY (`categoria`) REFERENCES `categorias` (`id`),
+  CONSTRAINT `solicitudes-dependencia` FOREIGN KEY (`dependencia`) REFERENCES `dependencias` (`id`),
+  CONSTRAINT `solicitudes-tiposolicitud` FOREIGN KEY (`tiposolicitud`) REFERENCES `tiposdesolicitud` (`id`),
+  CONSTRAINT `solicitudes-usuario` FOREIGN KEY (`usuariosolicitud`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*Data for the table `solicitudes` */
 
-insert  into `solicitudes`(`tipossolicitud`,`dependencia`,`categoria`,`descripcionsolicitud`,`usuariosolicitud`,`fecha`,`respuesta`,`estado`,`radicado`) values 
-('Peticion',1,'PAE','los alimentos estaban vencidos',1,'2023-11-20',NULL,'cancelado',1);
+insert  into `solicitudes`(`tiposolicitud`,`dependencia`,`categoria`,`descripcionsolicitud`,`usuariosolicitud`,`fecha`,`respuesta`,`estado`,`radicado`,`mediorespuesta`) values 
+(1,1,4,'prueba',1,'2023-11-25',NULL,'Pendiente',1,'Direccion');
 
 /*Table structure for table `tiposdesolicitud` */
 

@@ -34,7 +34,7 @@ public class ImpldaoSolicitud implements IDao<Solicitud> {
         PreparedStatement pst = null;
         try {
             mdb.conectar();
-            pst = mdb.getConexion().prepareStatement("Insert Into solicitudes values(?,?,?,?,?,?,?,?,?)");
+            pst = mdb.getConexion().prepareStatement("Insert Into solicitudes values(?,?,?,?,?,?,?,?,?,?)");
             pst.setInt(1, soli.getTiposolicitud().getId());
             pst.setInt(2, soli.getDependencia().getId());
             pst.setInt(3, soli.getCategoria().getId());
@@ -44,6 +44,7 @@ public class ImpldaoSolicitud implements IDao<Solicitud> {
             pst.setString(7, soli.getRespuesta());
             pst.setString(8, "Pendiente");
             pst.setInt(9, soli.getRadicado());
+            pst.setString(10, soli.getMediorespuesta());
             pst.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -160,35 +161,6 @@ public class ImpldaoSolicitud implements IDao<Solicitud> {
 
     @Override
     public void modificar(Solicitud solicitud) {
-        PreparedStatement pst = null;
-        try {
-            mdb.conectar();
-            pst = mdb.getConexion().prepareStatement("Update Solicitudes set tiposolicitud=?"
-                    + ",dependencia=?,descripcionsolicitud=?"
-                    + ",fecha=?,radicado=?,respuesta=? where radicado=?");
-            pst.setInt(1, solicitud.getTiposolicitud().getId());
-            pst.setInt(2, solicitud.getDependencia().getId());
-            pst.setString(3, solicitud.getDescripcionsolicitud());
-            pst.setInt(4, solicitud.getUsuariosolicitud().getId());
-            pst.setDate(5, (java.sql.Date) solicitud.getFecha());
-            pst.setString(6, solicitud.getRespuesta());
-            pst.setInt(7, solicitud.getRadicado());
-            pst.executeUpdate();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            //Logger.getLogger(ImpldaoCliente.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(ImpldaoSolicitud.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            mdb.desconectar(null);
-            if (pst != null) {
-                try {
-                    pst.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(ImpldaoSolicitud.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
     }
 
     public void updateRespuesta(String resp, int radicado, String estado) {
