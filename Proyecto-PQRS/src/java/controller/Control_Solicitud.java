@@ -15,6 +15,7 @@ import model.Dependencia;
 import model.Solicitud;
 import model.Tipo_Solicitud;
 import model.Usuario;
+import utilidades.FacesUtil;
 
 /**
  *
@@ -63,23 +64,32 @@ public class Control_Solicitud implements Serializable {
     public void agregarMedioRespuesta(String medio) {
 
     }
-    
-    public void agregarFecha(java.sql.Date fecha){
+
+    public void agregarFecha(java.sql.Date fecha) {
         solicitud.setFecha(fecha);
     }
-    
-    public void agregarUserId(int id){
+
+    public void agregarUserId(int id) {
         solicitud.setUsuariosolicitud(new Usuario(id, "", "", "", "", "", "", ""));
     }
     
-    
+    public int obtenernumeroRadicado(){
+        ImpldaoSolicitud imsoli = new ImpldaoSolicitud();
+        int radicado = imsoli.numradicado();{
+        return radicado;
+    }
+    }
 
     public void Registrar_Solicitud() {
         if (validarCampos()) {
             ImpldaoSolicitud imsoli = new ImpldaoSolicitud();
             imsoli.create(solicitud);
+            solicitud = new Solicitud();
+            FacesUtil.addInfoMessage("""
+                                     Se Ha Registrado La Solicitud Con Exito 
+                                     Su numero de radicado es: """+obtenernumeroRadicado());
         } else {
-            // Mostrar un mensaje de error o realizar alguna acción en caso de campos vacíos
+            FacesUtil.addErrorMessage("Faltan Campos Por Llenar");
         }
     }
 

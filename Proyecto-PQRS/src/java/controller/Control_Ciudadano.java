@@ -13,6 +13,8 @@ import javax.faces.bean.SessionScoped;
 import model.Categoria;
 import model.Ciudadano;
 import model.Dependencia;
+import model.Solicitud;
+import utilidades.FacesUtil;
 
 /**
  *
@@ -96,6 +98,7 @@ public class Control_Ciudadano implements Serializable {
         cs.agregarFecha(new java.sql.Date(new java.util.Date().getTime()));
         cs.agregarUserId(ciudadanologeado.getId());
         cs.Registrar_Solicitud();
+        
     }
 
     /**
