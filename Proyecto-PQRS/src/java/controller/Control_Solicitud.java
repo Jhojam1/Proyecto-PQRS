@@ -43,10 +43,14 @@ public class Control_Solicitud implements Serializable {
     }
 
     public void cancelarSolicitud() {
-        ImpldaoSolicitud imsoli = new ImpldaoSolicitud();
-        imsoli.delete(numeroradicadocancelar);
-        numeroradicadocancelar = 0;
-
+        if (numeroradicadocancelar > 0) {
+            ImpldaoSolicitud imsoli = new ImpldaoSolicitud();
+            imsoli.delete(numeroradicadocancelar);
+            FacesUtil.addInfoMessage("Su Solicitud ha sido cancelada con exito");
+            numeroradicadocancelar = 0;
+        } else {
+            FacesUtil.addErrorMessage("Ingrese un número de radicado válido para cancelar la solicitud");
+        }
     }
 
     public void agregarTipoSolicitudSolicitud(int tiposoli) {
@@ -72,12 +76,13 @@ public class Control_Solicitud implements Serializable {
     public void agregarUserId(int id) {
         solicitud.setUsuariosolicitud(new Usuario(id, "", "", "", "", "", "", ""));
     }
-    
-    public int obtenernumeroRadicado(){
+
+    public int obtenernumeroRadicado() {
         ImpldaoSolicitud imsoli = new ImpldaoSolicitud();
-        int radicado = imsoli.numradicado();{
-        return radicado;
-    }
+        int radicado = imsoli.numradicado();
+        {
+            return radicado;
+        }
     }
 
     public void Registrar_Solicitud() {
@@ -87,7 +92,7 @@ public class Control_Solicitud implements Serializable {
             solicitud = new Solicitud();
             FacesUtil.addInfoMessage("""
                                      Se Ha Registrado La Solicitud Con Exito 
-                                     Su numero de radicado es: """+obtenernumeroRadicado());
+                                     Su numero de radicado es: """ + obtenernumeroRadicado());
         } else {
             FacesUtil.addErrorMessage("Faltan Campos Por Llenar");
         }
@@ -101,7 +106,7 @@ public class Control_Solicitud implements Serializable {
     private boolean validarCampos() {
         if (solicitud.getTiposolicitud() == null || solicitud.getDependencia() == null
                 || solicitud.getCategoria() == null || solicitud.getDescripcionsolicitud() == null
-                || solicitud.getDescripcionsolicitud().trim().isEmpty() || solicitud.getMediorespuesta() == null)  {
+                || solicitud.getDescripcionsolicitud().trim().isEmpty() || solicitud.getMediorespuesta() == null) {
             // Si algún campo obligatorio está vacío o nulo, retorna false
             return false;
         }

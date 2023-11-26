@@ -6,14 +6,12 @@ package controller;
 
 import controller_Daos.ImpldaoCiudadano;
 import java.io.Serializable;
-import java.util.Date;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import model.Categoria;
 import model.Ciudadano;
 import model.Dependencia;
-import model.Solicitud;
 import utilidades.FacesUtil;
 
 /**
@@ -32,7 +30,7 @@ public class Control_Ciudadano implements Serializable {
 
     @ManagedProperty("#{control_Dependencia}")
     private Control_Dependencia depcon = new Control_Dependencia();
-    
+
     @ManagedProperty("#{control_Solicitud}")
     private Control_Solicitud cs = new Control_Solicitud();
 
@@ -49,8 +47,14 @@ public class Control_Ciudadano implements Serializable {
     private String paginanew = "";
 
     public void registrarCiudadano() {
-        impciu.create(ciudadano);
-        ciudadano = new Ciudadano();
+        if (validarCampos()) {
+            impciu.create(ciudadano);
+            ciudadano = new Ciudadano();
+            FacesUtil.addInfoMessage("Usuario Registrado Con Exito");
+        }
+        else{
+            FacesUtil.addErrorMessage("Faltan campos por llenar");
+        }
 
     }
 
@@ -80,10 +84,6 @@ public class Control_Ciudadano implements Serializable {
 
     }
 
-    public void cargarTipoSolicitudes() {
-
-    }
-
     public void obtenerCategoriasXDependencia(Dependencia d) {
         getCatcon().incializarListacategoriasXDependencia();
         getCs().agregarDependenciaSolicitud(d.getId());
@@ -93,12 +93,28 @@ public class Control_Ciudadano implements Serializable {
             }
         }
     }
-    
-    public void Registrar_Solicitud(){
+
+    public void Registrar_Solicitud() {
         cs.agregarFecha(new java.sql.Date(new java.util.Date().getTime()));
         cs.agregarUserId(ciudadanologeado.getId());
         cs.Registrar_Solicitud();
-        
+
+    }
+
+    private boolean validarCampos() {
+        if (ciudadano.getTiposolicitante() == null
+                || ciudadano.getNombres() == null || ciudadano.getNombres().trim().isEmpty()
+                || ciudadano.getApellidos() == null || ciudadano.getApellidos().trim().isEmpty()
+                || ciudadano.getTipoidentificacion() == null
+                || ciudadano.getNumeroidentificacion() == null || ciudadano.getNumeroidentificacion().trim().isEmpty()
+                || ciudadano.getNumerotelefono() == null || ciudadano.getNumerotelefono().trim().isEmpty()
+                || ciudadano.getDireccion() == null || ciudadano.getDireccion().trim().isEmpty()
+                || ciudadano.getCorreo() == null || ciudadano.getCorreo().trim().isEmpty()
+                || ciudadano.getUsuario() == null || ciudadano.getUsuario().trim().isEmpty()
+                || ciudadano.getContraseña() == null || ciudadano.getContraseña().trim().isEmpty()) {
+            return false;
+        }
+        return true;
     }
 
     /**

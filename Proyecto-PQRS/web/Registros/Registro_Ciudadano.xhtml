@@ -14,7 +14,10 @@
                     <h:outputText value="tipo Solicitante" />
                 </td>
                 <td>
-                    <p:inputText value="#{control_Ciudadano.ciudadano.tiposolicitante}"/>
+                    <p:panelGrid columns="2">
+                        <h:commandButton value="Persona Natural" action="#{control_Ciudadano.ciudadano.setTiposolicitante('Persona Natural')}"/>
+                        <h:commandButton value="Persona Juridica" action="#{control_Ciudadano.ciudadano.setTiposolicitante('Persona Juridica')}"/>
+                    </p:panelGrid>
                 </td>
             </tr>
             <tr>
@@ -38,7 +41,10 @@
                     <h:outputText value="Tipo De Identificacion" />
                 </td>
                 <td>
-                    <p:inputText value="#{control_Ciudadano.ciudadano.tipoidentificacion}"/>
+                    <p:panelGrid columns="2">
+                        <h:commandButton value="CC" action="#{control_Ciudadano.ciudadano.setTipoidentificacion('CC')}"/>      
+                        <h:commandButton value="TI" action="#{control_Ciudadano.ciudadano.setTipoidentificacion('TI')}"/>                                        
+                    </p:panelGrid>
                 </td>
             </tr>
             <tr>

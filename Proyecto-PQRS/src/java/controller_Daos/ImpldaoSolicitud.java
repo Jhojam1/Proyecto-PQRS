@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
 import model.Solicitud;
+import utilidades.FacesUtil;
 
 /**
  *
@@ -39,7 +40,7 @@ public class ImpldaoSolicitud implements IDao<Solicitud> {
             pst.setInt(2, soli.getDependencia().getId());
             pst.setInt(3, soli.getCategoria().getId());
             pst.setString(4, soli.getDescripcionsolicitud());
-                        pst.setInt(5, soli.getUsuariosolicitud().getId());
+            pst.setInt(5, soli.getUsuariosolicitud().getId());
             pst.setDate(6, (java.sql.Date) soli.getFecha());
             pst.setString(7, soli.getRespuesta());
             pst.setString(8, "Pendiente");
@@ -156,7 +157,9 @@ public class ImpldaoSolicitud implements IDao<Solicitud> {
                     Logger.getLogger(ImpldaoSolicitud.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+
         }
+
     }
 
     @Override
