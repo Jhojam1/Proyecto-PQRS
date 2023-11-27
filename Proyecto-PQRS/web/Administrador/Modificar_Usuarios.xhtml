@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <div class="container">
+            <div class="Tabla">
+                <p:dataTable value="#{control_Usuario.usuarioscreados}" var="user">
+                    <f:facet name="header">
+                        <h1>Usuarios Creados</h1>
+                    </f:facet>
+                    <p:column headerText="Nombres">
+                        #{user.nombres}
+                    </p:column>
+                    <p:column headerText="Apellidos">
+                        #{user.apellidos}
+                    </p:column>
+                    <p:column headerText="Tipo Identificacion">
+                        #{user.tipoidentificacion}
+                    </p:column>
+                    <p:column headerText="Numero Identificacion">
+                        #{user.numeroidentificacion}
+                    </p:column>
+                    <p:column headerText="Usuario">
+                        #{user.usuario}
+                    </p:column>
+                    <p:column headerText="Rol">
+                        #{user.rol}
+                    </p:column>
+                    <p:column headerText="ID">
+                        #{user.id}
+                    </p:column>
+                    <p:column headerText="Modificar">
+                        <h:commandButton value="modificar" action="#{control_Usuario.tipousuarioModificar(user.rol, user.id)}"/>
+                    </p:column>
+                </p:dataTable>
+                <h:commandButton value="Salir" action="#{control_Administrador.salir()}"/>
+
+            </div>
+
+            <div class="formulario">
+                <p:panel>
+                    <ui:include src="#{control_Usuario.panelmodificarusuario}" />
+                </p:panel>
+
+            </div>
+        </div>
+
+    </h:body>
+    <style>
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
+            grid-auto-columns: 1fr;
+            gap: 0px 0px;
+            grid-auto-flow: row;
+            grid-template-areas:
+                "Tabla Tabla . formulario"
+                "Tabla Tabla . formulario"
+                ". . . .";
+        }
+
+        .Tabla {
+            grid-area: Tabla;
+        }
+
+        .formulario {
+            grid-area: formulario;
+        }
+
+    </style>
+
+</html>

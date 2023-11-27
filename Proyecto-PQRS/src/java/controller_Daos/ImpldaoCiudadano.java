@@ -23,7 +23,7 @@ import model.Ciudadano;
  */
 public class ImpldaoCiudadano implements IDao<Ciudadano> {
 
-   ManejadorBaseDatos mdb = ManejadorBaseDatos.getInstancia();
+    ManejadorBaseDatos mdb = ManejadorBaseDatos.getInstancia();
 
     @Override
     public void setDataSource(DataSource ds) {
@@ -79,8 +79,8 @@ public class ImpldaoCiudadano implements IDao<Ciudadano> {
         } catch (SQLException ex) {
             Logger.getLogger(ImpldaoCiudadano.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-           Logger.getLogger(ImpldaoCiudadano.class.getName()).log(Level.SEVERE, null, ex);
-       } finally {
+            Logger.getLogger(ImpldaoCiudadano.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
             mdb.desconectar(generatedKeys);
             // Cerrar recursos
             if (pst1 != null) {
@@ -129,7 +129,7 @@ public class ImpldaoCiudadano implements IDao<Ciudadano> {
                 ciudadano = Ciudadano.load(rs);
             }
         } finally {
-             mdb.desconectar(rs);
+            mdb.desconectar(rs);
             if (rs != null) {
                 try {
                     rs.close();
@@ -167,9 +167,9 @@ public class ImpldaoCiudadano implements IDao<Ciudadano> {
         } catch (SQLException ex) {
             Logger.getLogger(ImpldaoCiudadano.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-           Logger.getLogger(ImpldaoCiudadano.class.getName()).log(Level.SEVERE, null, ex);
-       } finally {
-             mdb.desconectar(rs);
+            Logger.getLogger(ImpldaoCiudadano.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            mdb.desconectar(rs);
             if (rs != null) {
                 try {
                     rs.close();
@@ -194,21 +194,21 @@ public class ImpldaoCiudadano implements IDao<Ciudadano> {
         PreparedStatement pstCiudadanos = null;
         try {
             mdb.conectar();
-            // Eliminar de la tabla 'usuarios'
-            pstUsuarios = mdb.getConexion().prepareStatement("DELETE FROM usuarios WHERE id=?");
-            pstUsuarios.setInt(1, id);
-            pstUsuarios.executeUpdate();
-
             // Eliminar de la tabla 'ciudadanos'
             pstCiudadanos = mdb.getConexion().prepareStatement("DELETE FROM ciudadanos WHERE id =?");
             pstCiudadanos.setInt(1, id);
             pstCiudadanos.executeUpdate();
+
+            // Eliminar de la tabla 'usuarios'
+            pstUsuarios = mdb.getConexion().prepareStatement("DELETE FROM usuarios WHERE id=?");
+            pstUsuarios.setInt(1, id);
+            pstUsuarios.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(ImpldaoCiudadano.class.getName()).log(Level.SEVERE, null, ex);
             //Logger.getLogger(ImpldaoCliente.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-           Logger.getLogger(ImpldaoCiudadano.class.getName()).log(Level.SEVERE, null, ex);
-       } finally {
+            Logger.getLogger(ImpldaoCiudadano.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
             mdb.desconectar(null);
             // Cerrar recursos en bloques individuales
             if (pstUsuarios != null) {
@@ -267,8 +267,8 @@ public class ImpldaoCiudadano implements IDao<Ciudadano> {
             Logger.getLogger(ImpldaoCiudadano.class.getName()).log(Level.SEVERE, null, ex);
             // Puedes manejar la excepción según tus requisitos
         } catch (Exception ex) {
-           Logger.getLogger(ImpldaoCiudadano.class.getName()).log(Level.SEVERE, null, ex);
-       } finally {
+            Logger.getLogger(ImpldaoCiudadano.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
             mdb.desconectar(null);
             // Cerrar recursos en bloques individuales
             if (pstUsuarios != null) {

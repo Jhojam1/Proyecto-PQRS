@@ -28,12 +28,13 @@ CREATE TABLE `administradores` (
   KEY `administrador-dependencia` (`dependencia`),
   CONSTRAINT `administrador-dependencia` FOREIGN KEY (`dependencia`) REFERENCES `dependencias` (`id`),
   CONSTRAINT `administrador-usuario` FOREIGN KEY (`id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 /*Data for the table `administradores` */
 
 insert  into `administradores`(`id`,`correo`,`dependencia`) values 
-(2,'JhojamCaraballo@gmail.com',1);
+(2,'JhojamCaraballo@gmail.com',2),
+(7,'Jhojam@gmail.com',4);
 
 /*Table structure for table `categorias` */
 
@@ -100,20 +101,28 @@ insert  into `dependencias`(`id`,`nombre`) values
 (3,'Secretaria de salud'),
 (4,'Secretaria de gobierno');
 
-/*Table structure for table `secretariosdespacho` */
+/*Table structure for table `secretarios` */
 
-DROP TABLE IF EXISTS `secretariosdespacho`;
+DROP TABLE IF EXISTS `secretarios`;
 
-CREATE TABLE `secretariosdespacho` (
+CREATE TABLE `secretarios` (
   `id` int(255) NOT NULL AUTO_INCREMENT,
   `correo` varchar(255) DEFAULT NULL,
   `dependencia` int(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `secretarios-dependencia` FOREIGN KEY (`id`) REFERENCES `dependencias` (`id`),
+  KEY `secretarios-dependencia` (`dependencia`),
+  CONSTRAINT `secretarios-dependencia` FOREIGN KEY (`dependencia`) REFERENCES `dependencias` (`id`),
   CONSTRAINT `secretarios-usuario` FOREIGN KEY (`id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
-/*Data for the table `secretariosdespacho` */
+/*Data for the table `secretarios` */
+
+insert  into `secretarios`(`id`,`correo`,`dependencia`) values 
+(3,'JhojamCaraballo@gmail.com',2),
+(6,'JhojamCaraballo@gmail.com',1),
+(8,'JhojamCaraballo@gmail.com',1),
+(9,'jhojam@gmail.com',4),
+(10,'Jhojam@gmail.com',3);
 
 /*Table structure for table `solicitudes` */
 
@@ -180,13 +189,20 @@ CREATE TABLE `usuarios` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UQ__Constrai_usuario` (`usuario`),
   UNIQUE KEY `UQ__Constrai_numidentificacion` (`numeroidentificacion`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 /*Data for the table `usuarios` */
 
 insert  into `usuarios`(`id`,`nombres`,`apellidos`,`tipoidentificacion`,`numeroidentificacion`,`usuario`,`contraseña`,`rol`) values 
-(1,'Jhojam Jesus','Caraballo Tapia','CC','12394857484','Jhojam1','Jhojam1','Ciudadano'),
-(2,'Jhojam Jesus','Caraballo Tapia','CC','123467890','Jhojam2','Jhojam2','Administrador');
+(1,'Pablito Jose','Perez Perez','CC','12394857484','Jhojam1','Jhojam1','Ciudadano'),
+(2,'Jhojam','Caraballo','CC','123467890','Jhojam2','Jhojam2','Administrador'),
+(3,'Jhojam Jesus','Caraballo Tapia','CC','847577475','Jhojam3','Jhojam3','Secretario de despacho'),
+(5,'Jhojam ','Caraballo','CC','3123123213','Jhojam','Jhojam','Secretario de despacho'),
+(6,'Jhojam ','Caraballo','TI','12312332','Jhojam4','Jhojam4','Secretario de despacho'),
+(7,'Jhojam ','Caraballo','CC','4535345345','Jhojam5','Jhojam5','Administrador'),
+(8,'Jhojam ','Caraballo','CC','65756756756','Jhojam6','Jhojam6','Secretario de despacho'),
+(9,'pablo','perez','CC','123123123','Jhojam10','Jhojam10','Secretario de despacho'),
+(10,'Jhojam','Jhojam','TI','23123123','Jhojam9','Jhojam9','Secretario de despacho');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

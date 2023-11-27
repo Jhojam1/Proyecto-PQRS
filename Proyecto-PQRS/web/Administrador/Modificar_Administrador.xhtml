@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <p:panelGrid columns="2">
+            <f:facet name="header">
+                <h1>Administrador</h1>
+            </f:facet>
+            <h:outputText value="Nombres"/>
+            <h:inputText value="#{control_Usuario.administrador.nombres}"/>
+            <h:outputText value="Apellidos"/>
+            <h:inputText value="#{control_Usuario.administrador.apellidos}"/>
+            <h:outputText value="Tipo Identificacion"/>
+            <h:inputText value="#{control_Usuario.administrador.tipoidentificacion}"/>
+            <h:outputText value="Numero Identificacion"/>
+            <h:inputText value="#{control_Usuario.administrador.numeroidentificacion}"/>
+            <h:outputText value="Usuario"/>
+            <h:inputText value="#{control_Usuario.administrador.usuario}"/>
+            <h:outputText value="Contraseña"/>
+            <h:inputText value="#{control_Usuario.administrador.contraseña}"/>
+            <h:outputText value="Correo"/>
+            <h:inputText value="#{control_Usuario.administrador.correo}"/>
+            <h:outputText value="Dependencia"/>
+            <p:dataGrid var="dep" value="#{control_Dependencia.listadependencias}">
+                <h:commandButton value="#{dep.nombre}" action="#{control_Usuario.agregarDependenciaAdministrador(dep.id)}" />                     
+            </p:dataGrid>
+            <h:outputText value="Actualizar"/>
+            <h:commandButton value="Actualizar" action="#{control_Usuario.modificarAdministrador()}"/>
+            <h:outputText value="Salir"/>
+            <h:commandButton value="Salir" action="#{control_Usuario.salirpanelmodificar()}"/>
+
+        </p:panelGrid>
+    </h:body>
+</html>

@@ -12,10 +12,12 @@
         <p>Selecciona Tu Opcion:</p>
 
         <p:panelGrid columns="1">
-            <h:commandButton value="1. Crear"/>
-            <h:commandButton value="2. Modificar"/>
-            <h:commandButton value="3. Eliminar"/>    
-            <h:commandButton value="4. Listar"/>
+            <h:commandButton value="1. Crear Secretarios De Despacho" action="#{control_Administrador.menuCrearSecretarios()}"/>
+            <h:commandButton value="2. Crear Ciudadanos" action="#{control_Administrador.menuCrearCiudadanos()}"/>
+            <h:commandButton value="3. Crear Administradores" action="#{control_Administrador.menuCrearAdministrador()}"/>
+            <h:commandButton value="2. Modificar" action="#{control_Usuario.modificarUsuariosAdministrador()}"/>
+            <h:commandButton value="3. Eliminar" action="#{control_Usuario.menuEliminarUsuarioAdministrador()}"/>    
+            <h:commandButton value="4. Listar" action="#{control_Usuario.menuListarUsuarios()}"/>
             <h:commandButton value="5. Salir" action="#{control_Administrador.salir()}"/>
         </p:panelGrid>
     </h:body>

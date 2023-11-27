@@ -47,7 +47,7 @@ public class Control_Ciudadano implements Serializable {
     private String paginanew = "";
 
     public void registrarCiudadano() {
-        if (validarCampos()) {
+        if (validarCampos(ciudadano)) {
             impciu.create(ciudadano);
             ciudadano = new Ciudadano();
             FacesUtil.addInfoMessage("Usuario Registrado Con Exito");
@@ -93,6 +93,10 @@ public class Control_Ciudadano implements Serializable {
             }
         }
     }
+    
+    public void obtenerDependencias(){
+        getDepcon().getDependenciasOptions();
+    }
 
     public void Registrar_Solicitud() {
         cs.agregarFecha(new java.sql.Date(new java.util.Date().getTime()));
@@ -101,20 +105,31 @@ public class Control_Ciudadano implements Serializable {
 
     }
 
-    private boolean validarCampos() {
-        if (ciudadano.getTiposolicitante() == null
-                || ciudadano.getNombres() == null || ciudadano.getNombres().trim().isEmpty()
-                || ciudadano.getApellidos() == null || ciudadano.getApellidos().trim().isEmpty()
-                || ciudadano.getTipoidentificacion() == null
-                || ciudadano.getNumeroidentificacion() == null || ciudadano.getNumeroidentificacion().trim().isEmpty()
-                || ciudadano.getNumerotelefono() == null || ciudadano.getNumerotelefono().trim().isEmpty()
-                || ciudadano.getDireccion() == null || ciudadano.getDireccion().trim().isEmpty()
-                || ciudadano.getCorreo() == null || ciudadano.getCorreo().trim().isEmpty()
-                || ciudadano.getUsuario() == null || ciudadano.getUsuario().trim().isEmpty()
-                || ciudadano.getContraseña() == null || ciudadano.getContraseña().trim().isEmpty()) {
+    private boolean validarCampos(Ciudadano ciu) {
+        if (ciu.getTiposolicitante() == null
+                || ciu.getNombres() == null || ciu.getNombres().trim().isEmpty()
+                || ciu.getApellidos() == null || ciu.getApellidos().trim().isEmpty()
+                || ciu.getTipoidentificacion() == null
+                || ciu.getNumeroidentificacion() == null || ciu.getNumeroidentificacion().trim().isEmpty()
+                || ciu.getNumerotelefono() == null || ciu.getNumerotelefono().trim().isEmpty()
+                || ciu.getDireccion() == null || ciu.getDireccion().trim().isEmpty()
+                || ciu.getCorreo() == null || ciu.getCorreo().trim().isEmpty()
+                || ciu.getUsuario() == null || ciu.getUsuario().trim().isEmpty()
+                || ciu.getContraseña() == null || ciu.getContraseña().trim().isEmpty()) {
             return false;
         }
         return true;
+    }
+       
+    public void actualizarCiudadano(Ciudadano ciu){
+        if(validarCampos(ciu)){
+            impciu.modificar(ciu);
+            FacesUtil.addInfoMessage("Usuario Actualizado Con Exito");
+        }
+        else{
+            FacesUtil.addErrorMessage("Faltan Campos Por Llenar");
+        }
+        
     }
 
     /**
