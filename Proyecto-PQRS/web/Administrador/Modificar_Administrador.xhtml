@@ -26,10 +26,6 @@
             <h:inputText value="#{control_Usuario.administrador.contraseña}"/>
             <h:outputText value="Correo"/>
             <h:inputText value="#{control_Usuario.administrador.correo}"/>
-            <h:outputText value="Dependencia"/>
-            <p:dataGrid var="dep" value="#{control_Dependencia.listadependencias}">
-                <h:commandButton value="#{dep.nombre}" action="#{control_Usuario.agregarDependenciaAdministrador(dep.id)}" />                     
-            </p:dataGrid>
             <h:outputText value="Actualizar"/>
             <h:commandButton value="Actualizar" action="#{control_Usuario.modificarAdministrador()}"/>
             <h:outputText value="Salir"/>

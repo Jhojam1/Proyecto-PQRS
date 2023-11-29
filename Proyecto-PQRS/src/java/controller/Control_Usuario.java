@@ -183,10 +183,6 @@ public class Control_Usuario implements Serializable {
         panelmodificarusuario = "";
     }
 
-    public void agregarDependenciaAdministrador(int dependencia) {
-        administrador.setDependencia(new Dependencia("", dependencia));
-    }
-
     public void agregarDependenciaSecretario(int dependencia) {
         secretario.setDependencia(new Dependencia("", dependencia));
     }

@@ -63,12 +63,10 @@ public class ImpldaoAdministrador implements IDao<Administrador> {
 
                     // Segunda sentencia para insertar en la tabla 'ciudadanos'
                     pst2 = mdb.getConexion().prepareStatement(
-                            "INSERT INTO administradores (id, correo, dependencia) VALUES (?, ?, ?)");
+                            "INSERT INTO administradores (id, correo) VALUES (?, ?)");
 
                     pst2.setInt(1, lastId);
                     pst2.setString(2, admin.getCorreo());
-                    pst2.setInt(3, admin.getDependencia().getId());
-
                     // Ejecutar la segunda sentencia
                     pst2.executeUpdate();
                 }
@@ -117,7 +115,7 @@ public class ImpldaoAdministrador implements IDao<Administrador> {
             mdb.conectar();
             pst = mdb.getConexion().prepareStatement("SELECT usuarios.id, usuarios.nombres, usuarios.apellidos, usuarios.tipoidentificacion, usuarios.numeroidentificacion,\n"
                     + "       usuarios.usuario, usuarios.contraseña, usuarios.rol,\n"
-                    + "       administradores.correo,administradores.dependencia\n"
+                    + "       administradores.correo\n"
                     + "FROM usuarios\n"
                     + "JOIN administradores ON usuarios.id = administradores.id\n"
                     + "WHERE usuarios.id = ?;");
@@ -155,7 +153,7 @@ public class ImpldaoAdministrador implements IDao<Administrador> {
             mdb.conectar();
             pst = mdb.getConexion().prepareStatement("SELECT usuarios.id, usuarios.nombres, usuarios.apellidos, usuarios.tipoidentificacion, usuarios.numeroidentificacion,\n"
                     + "       usuarios.usuario, usuarios.contraseña, usuarios.rol,\n"
-                    + "       administradores.correo,administradores.dependencia\n"
+                    + "       administradores.correo\n"
                     + "FROM usuarios\n"
                     + "JOIN administradores ON usuarios.id = administradores.id");
             rs = pst.executeQuery();
@@ -251,11 +249,10 @@ public class ImpldaoAdministrador implements IDao<Administrador> {
 
             // Actualizar la tabla 'ciudadanos'
             pstCiudadanos = mdb.getConexion().prepareStatement(
-                    "UPDATE administradores SET correo=?, dependencia=? WHERE id=?");
+                    "UPDATE administradores SET correo=? WHERE id=?");
 
             pstCiudadanos.setString(1, administrador.getCorreo());
-            pstCiudadanos.setInt(2, administrador.getDependencia().getId());
-            pstCiudadanos.setInt(3, administrador.getId());
+            pstCiudadanos.setInt(2, administrador.getId());
 
             pstCiudadanos.executeUpdate();
 

@@ -15,20 +15,17 @@ import java.sql.SQLException;
  */
 public class Administrador extends Usuario implements Serializable{
     private String correo;
-    private Dependencia dependencia;
-
+    
     public Administrador() {
     }
 
-    public Administrador(String correo, Dependencia dependencia) {
+    public Administrador(String correo ) {
         this.correo = correo;
-        this.dependencia = dependencia;
     }
 
     public Administrador(String correo, Dependencia dependencia, int id, String nombres, String apellidos, String tipoidentificacion, String numeroidentificacion, String usuario, String contraseña, String rol) {
         super(id, nombres, apellidos, tipoidentificacion, numeroidentificacion, usuario, contraseña, rol);
         this.correo = correo;
-        this.dependencia = dependencia;
     }
     
         public static Administrador load(ResultSet rs) throws SQLException {
@@ -43,7 +40,6 @@ public class Administrador extends Usuario implements Serializable{
         administrador.setContraseña(rs.getString(7));
         administrador.setRol(rs.getString(8));
         administrador.setCorreo(rs.getString(9));
-        administrador.setDependencia(imdep.select(rs.getInt(10)));
         return administrador;
     }
     
@@ -60,21 +56,5 @@ public class Administrador extends Usuario implements Serializable{
     public void setCorreo(String correo) {
         this.correo = correo;
     }
-
-    /**
-     * @return the dependencia
-     */
-    public Dependencia getDependencia() {
-        return dependencia;
-    }
-
-    /**
-     * @param dependencia the dependencia to set
-     */
-    public void setDependencia(Dependencia dependencia) {
-        this.dependencia = dependencia;
-    }
-    
-    
     
 }

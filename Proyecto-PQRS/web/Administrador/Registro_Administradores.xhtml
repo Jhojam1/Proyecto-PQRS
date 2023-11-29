@@ -43,19 +43,7 @@
                 <td>
                     <p:inputText value="#{control_Administrador.administrador.numeroidentificacion}"/>
                 </td>
-            </tr>          
-            <tr>
-                <td>
-                    <h:outputText value="Dependencia" />
-                </td>
-                <td>     
-                    <p:dataGrid var="dep" value="#{control_Dependencia.listadependencias}">
-                        <p:panel>
-                            <h:commandButton value="#{dep.nombre}" action="#{control_Administrador.agregarDependenciaAdministrador(dep.id)}" />
-                        </p:panel>                        
-                    </p:dataGrid>
-                </td>
-            </tr>
+            </tr>                      
             <tr>
                 <td>
                     <h:outputText value="correo" />

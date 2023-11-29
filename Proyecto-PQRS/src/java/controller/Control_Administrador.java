@@ -7,10 +7,8 @@ package controller;
 import controller_Daos.ImpldaoAdministrador;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import model.Administrador;
-import model.Dependencia;
 import utilidades.FacesUtil;
 
 /**
@@ -20,8 +18,6 @@ import utilidades.FacesUtil;
 @ManagedBean
 @SessionScoped
 public class Control_Administrador implements Serializable {
-
-
 
     /**
      * Creates a new instance of Control_Administrador
@@ -34,20 +30,19 @@ public class Control_Administrador implements Serializable {
     private String paginasiguiente = "";
 
     private ImpldaoAdministrador impadm = new ImpldaoAdministrador();
-    
-    public void crearAdministrador(){
-        if(validarCampos(administrador)){
+
+    public void crearAdministrador() {
+        if (validarCampos(administrador)) {
             impadm.create(administrador);
+            administrador = new Administrador();
             FacesUtil.addInfoMessage("Usuario Registrado Con Exito");
-        }
-        else{
+        } else {
             FacesUtil.addInfoMessage("Faltan Campos Por Llenar");
         }
     }
-    
-        private boolean validarCampos(Administrador admi) {
-        if (admi.getDependencia() == null
-                || admi.getNombres() == null || admi.getNombres().trim().isEmpty()
+
+    private boolean validarCampos(Administrador admi) {
+        if (admi.getNombres() == null || admi.getNombres().trim().isEmpty()
                 || admi.getApellidos() == null || admi.getApellidos().trim().isEmpty()
                 || admi.getTipoidentificacion() == null
                 || admi.getNumeroidentificacion() == null || admi.getNumeroidentificacion().trim().isEmpty()
@@ -68,39 +63,38 @@ public class Control_Administrador implements Serializable {
         menu = false;
         paginasiguiente = "/Administrador/Registro_Secretarios.xhtml";
     }
-    
-    public void menuCrearCiudadanos(){
-        menu= false;
-        paginasiguiente="/Administrador/Registro_Ciudadano.xhtml";
+
+    public void menuCrearCiudadanos() {
+        menu = false;
+        paginasiguiente = "/Administrador/Registro_Ciudadano.xhtml";
     }
-    
-    public void menuCrearAdministrador(){
-        menu=false;
-        paginasiguiente="/Administrador/Registro_Administradores.xhtml";
+
+    public void menuCrearAdministrador() {
+        menu = false;
+        paginasiguiente = "/Administrador/Registro_Administradores.xhtml";
     }
-    
-    public void menuModificarUsuarios(){
-        menu=false;
-        paginasiguiente="/Administrador/Modificar_Usuarios.xhtml";
+
+    public void menuModificarUsuarios() {
+        menu = false;
+        paginasiguiente = "/Administrador/Modificar_Usuarios.xhtml";
     }
-    
-    public void menuEliminarUsuarios(){
-        menu=false;
-        paginasiguiente="/Administrador/Eliminar_Usuarios.xhtml";
+
+    public void menuEliminarUsuarios() {
+        menu = false;
+        paginasiguiente = "/Administrador/Eliminar_Usuarios.xhtml";
     }
-    
-    public void menuListarUsuarios(){
-        menu=false;
-        paginasiguiente="/Administrador/Listar_Usuarios.xhtml";
+
+    public void menuListarUsuarios() {
+        menu = false;
+        paginasiguiente = "/Administrador/Listar_Usuarios.xhtml";
     }
-    
-    public void actualizarAdministrador(Administrador admin){      
-        if(validarCampos(admin)){
+
+    public void actualizarAdministrador(Administrador admin) {
+        if (validarCampos(admin)) {
             ImpldaoAdministrador impadm = new ImpldaoAdministrador();
             impadm.modificar(admin);
             FacesUtil.addInfoMessage("Usuario Actualizado Con Exito");
-        }
-        else{
+        } else {
             FacesUtil.addErrorMessage("Faltan Campos Por Llenar");
         }
     }
@@ -108,10 +102,6 @@ public class Control_Administrador implements Serializable {
     public void salir() {
         menu = true;
         paginasiguiente = "";
-    }
-
-    public void agregarDependenciaAdministrador(int dependencia){
-        administrador.setDependencia(new Dependencia("", dependencia));
     }
     /**
      * @return the adminLogeado
