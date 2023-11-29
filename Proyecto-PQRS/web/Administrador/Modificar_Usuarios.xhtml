@@ -6,7 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>Facelet Title</title>
+
     </h:head>
     <h:body>
         <div class="container">
@@ -57,18 +57,20 @@
         .container {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr;
-            grid-template-rows: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
             grid-auto-columns: 1fr;
             gap: 0px 0px;
             grid-auto-flow: row;
             grid-template-areas:
                 "Tabla Tabla . formulario"
                 "Tabla Tabla . formulario"
-                ". . . .";
+                ;
         }
 
         .Tabla {
             grid-area: Tabla;
+            height: 100vh;
+
         }
 
         .formulario {
@@ -76,5 +78,4 @@
         }
 
     </style>
-
 </html>
