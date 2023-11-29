@@ -86,6 +86,9 @@ public class Control_Usuario implements Serializable {
                 getAdmcon().setAdmin(administrador);
             }
         }
+        else{
+            FacesUtil.addErrorMessage("Usuario Y/O Contraseñas Incorrectas");
+        }
     }
 
     public void mostrarRegistrar() {
