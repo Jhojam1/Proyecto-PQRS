@@ -1,6 +1,6 @@
 /*
 SQLyog Community v12.2.5 (32 bit)
-MySQL - 5.5.19 : Database - bd_pqrs
+MySQL - 5.5.41 : Database - bd_pqrs
 *********************************************************************
 */
 
@@ -23,18 +23,14 @@ DROP TABLE IF EXISTS `administradores`;
 CREATE TABLE `administradores` (
   `id` int(255) NOT NULL AUTO_INCREMENT,
   `correo` varchar(255) DEFAULT NULL,
-  `dependencia` int(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `administrador-dependencia` (`dependencia`),
-  CONSTRAINT `administrador-dependencia` FOREIGN KEY (`dependencia`) REFERENCES `dependencias` (`id`),
   CONSTRAINT `administrador-usuario` FOREIGN KEY (`id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 /*Data for the table `administradores` */
 
-insert  into `administradores`(`id`,`correo`,`dependencia`) values 
-(2,'JhojamCaraballo@gmail.com',2),
-(7,'Jhojam@gmail.com',4);
+insert  into `administradores`(`id`,`correo`) values 
+(2,'JhojamCaraballo@gmail.com');
 
 /*Table structure for table `categorias` */
 
@@ -113,7 +109,7 @@ CREATE TABLE `secretarios` (
   KEY `secretarios-dependencia` (`dependencia`),
   CONSTRAINT `secretarios-dependencia` FOREIGN KEY (`dependencia`) REFERENCES `dependencias` (`id`),
   CONSTRAINT `secretarios-usuario` FOREIGN KEY (`id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 /*Data for the table `secretarios` */
 
@@ -122,7 +118,8 @@ insert  into `secretarios`(`id`,`correo`,`dependencia`) values
 (6,'JhojamCaraballo@gmail.com',1),
 (8,'JhojamCaraballo@gmail.com',1),
 (9,'jhojam@gmail.com',4),
-(10,'Jhojam@gmail.com',3);
+(10,'Jhojam@gmail.com',3),
+(12,'prueba@gmail.com',1);
 
 /*Table structure for table `solicitudes` */
 
@@ -148,12 +145,15 @@ CREATE TABLE `solicitudes` (
   CONSTRAINT `solicitudes-dependencia` FOREIGN KEY (`dependencia`) REFERENCES `dependencias` (`id`),
   CONSTRAINT `solicitudes-tiposolicitud` FOREIGN KEY (`tiposolicitud`) REFERENCES `tiposdesolicitud` (`id`),
   CONSTRAINT `solicitudes-usuario` FOREIGN KEY (`usuariosolicitud`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 /*Data for the table `solicitudes` */
 
 insert  into `solicitudes`(`tiposolicitud`,`dependencia`,`categoria`,`descripcionsolicitud`,`usuariosolicitud`,`fecha`,`respuesta`,`estado`,`radicado`,`mediorespuesta`) values 
-(1,1,4,'prueba',1,'2023-11-25',NULL,'Pendiente',1,'Direccion');
+(1,1,4,'prueba',1,'2023-11-25',NULL,'Pendiente',1,'Direccion'),
+(1,1,1,'prueba',1,'2023-11-28',NULL,'Cancelada',2,'Direccion'),
+(1,1,4,'prueba',1,'2023-11-28',NULL,'Pendiente',3,'Direccion'),
+(1,2,7,'asd',1,'2023-11-28',NULL,'Pendiente',4,'Correo Electronico');
 
 /*Table structure for table `tiposdesolicitud` */
 
@@ -189,7 +189,7 @@ CREATE TABLE `usuarios` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UQ__Constrai_usuario` (`usuario`),
   UNIQUE KEY `UQ__Constrai_numidentificacion` (`numeroidentificacion`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 /*Data for the table `usuarios` */
 
@@ -199,10 +199,10 @@ insert  into `usuarios`(`id`,`nombres`,`apellidos`,`tipoidentificacion`,`numeroi
 (3,'Jhojam Jesus','Caraballo Tapia','CC','847577475','Jhojam3','Jhojam3','Secretario de despacho'),
 (5,'Jhojam ','Caraballo','CC','3123123213','Jhojam','Jhojam','Secretario de despacho'),
 (6,'Jhojam ','Caraballo','TI','12312332','Jhojam4','Jhojam4','Secretario de despacho'),
-(7,'Jhojam ','Caraballo','CC','4535345345','Jhojam5','Jhojam5','Administrador'),
 (8,'Jhojam ','Caraballo','CC','65756756756','Jhojam6','Jhojam6','Secretario de despacho'),
 (9,'pablo','perez','CC','123123123','Jhojam10','Jhojam10','Secretario de despacho'),
-(10,'Jhojam','Jhojam','TI','23123123','Jhojam9','Jhojam9','Secretario de despacho');
+(10,'Jhojam','Jhojam','TI','23123123','Jhojam9','Jhojam9','Secretario de despacho'),
+(12,'Secretario','Prueba','TI','1234','prueba','prueba','Secretario de despacho');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
