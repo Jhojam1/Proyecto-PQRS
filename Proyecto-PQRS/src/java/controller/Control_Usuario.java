@@ -190,6 +190,10 @@ public class Control_Usuario implements Serializable {
     public void agregarDependenciaSecretario(int dependencia) {
         secretario.setDependencia(new Dependencia("", dependencia));
     }
+    
+    public void mensajeProximamente(){
+        FacesUtil.addInfoMessage("No Disponible, Proximamente");
+    }
 
     /**
      * @return the user

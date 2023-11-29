@@ -13,11 +13,11 @@
             <p>Bienvenido #{control_Administrador.admin.toString()}</p> 
             <p>Selecciona Tu Opcion:</p>
             <h:commandButton value="1. Gestion De Usuarios" action="#{control_Administrador.menuGestiondeUsuarios()}"/>
-            <h:commandButton value="2. Gestion De Tipos De Solicitudes"/>
-            <h:commandButton value="3. Gestion De Los Tiempos De Respuesta"/>    
-            <h:commandButton value="4. Gestion De Dependencias"/>
-            <h:commandButton value="5. Direccionar PQRS"/>
-            <h:commandButton value="6. Reportes"/>
+            <h:commandButton value="2. Gestion De Tipos De Solicitudes" action="#{control_Usuario.mensajeProximamente()}"/>
+            <h:commandButton value="3. Gestion De Los Tiempos De Respuesta" action="#{control_Usuario.mensajeProximamente()}"/>    
+            <h:commandButton value="4. Gestion De Dependencias" action="#{control_Usuario.mensajeProximamente()}"/>
+            <h:commandButton value="5. Direccionar PQRS" action="#{control_Usuario.mensajeProximamente()}"/>
+            <h:commandButton value="6. Reportes" action="#{control_Usuario.mensajeProximamente()}"/>
             <h:commandButton value="7. Salir" action="#{control_Usuario.salir()}"/>       
         </p:panelGrid>
         <p:panel rendered="#{!control_Administrador.menu}">
